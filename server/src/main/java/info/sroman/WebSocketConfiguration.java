@@ -12,16 +12,22 @@ public class WebSocketConfiguration extends AbstractWebSocketMessageBrokerConfig
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        // prefix all URL endpoints that clients subscribe to to view server-pushed messages with "/topic"
+        // INCOMING
+        // prefix for all @MessageMapping controller endpoints which are to be handled by this message broker
+        // (messages will be sent to: "app/message" or "app/hello", etc.)
+        config.setApplicationDestinationPrefixes("/app");
+
+        // OUTGOING
+        // "SimpleBroker" means in-memory broker
+        // prefix(es) for outgoing message destinations. Many destinations may be handled by a single message broker.
+        // (subscribe to "topic/data" or "topic/prices", defined by @SentTo annotation in WebSocket controller)
         config.enableSimpleBroker("/topic");
 
-        // prefix all URL endpoints for controllers that accept WebSocket messages with "/app"
-        config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        // enable SockJS fallback options should the WebSocket connection fail (due to browser incompatibility, etc.)
-        registry.addEndpoint("/gs-guide-websocket").withSockJS();
+        // endpoint for socket connection requests to point to for handshaking
+        registry.addEndpoint("/buoy").withSockJS();
     }
 }

@@ -1,3 +1,8 @@
 .idea/*
 *.iml
 /target
+client/src/main/client/node_modules
+server/target
+client/target
+server/src/main/resources/static
+client/src/main/client/node
