@@ -1,5 +1,8 @@
-package info.sroman;
+package info.sroman.controllers;
 
+import info.sroman.model.SocketMessage;
+import info.sroman.entities.Editor;
+import info.sroman.repositories.PostRepository;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -9,6 +12,8 @@ public class SocketController {
 
     private Editor editor = new Editor();
 
+    public SocketController(PostRepository repository) { }
+
     // INCOMING
     // "request" endpoint for incoming WebSocket messages to this controller
     // ("app/message" due to application destination prefixes in config")
@@ -16,17 +21,17 @@ public class SocketController {
     //  OUTGOING
     // "response" endpoint to push outgoing WebSocket messages to. Clients subscribe to this endpoint to see messages
     @SendTo("/topic/editor")
-    public Message sendMessage(Message incomingMessage) throws Exception {
+    public SocketMessage sendMessage(SocketMessage incomingSocketMessage) throws Exception {
         // if the user just joined their in-browser editor will be empty,
         // therefore don't update editor to be blank!
-        if (incomingMessage.isFreshConnect()) {
+        if (incomingSocketMessage.isFreshConnect()) {
             System.out.println("New connection detected");
-            System.out.println("editor text is" + editor.getText());
-            return new Message(editor.getText());
+            System.out.println("editor text is " + editor.getText());
+            return new SocketMessage(editor.getText());
         } else {
-            editor.setText(incomingMessage.getText());
+            editor.setText(incomingSocketMessage.getText());
             System.out.println("editor text set: " + editor.getText());
-            return new Message(editor.getText());
+            return new SocketMessage(editor.getText());
         }
     }
 }
