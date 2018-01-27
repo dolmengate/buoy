@@ -1,12 +1,6 @@
 package info.sroman.entities;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,33 +9,53 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Type type;
+
     private String author;
+    private String title;
+    private String description;
 
-    @LastModifiedDate
+    private Long contentId;
+
     private LocalDateTime lastModified;
-
-    @CreatedDate
     private LocalDateTime created;
 
-    private String description;
-    private String title;
-    private Float version;
+    public Post() { }
+
+    public Post(String title, String author, String description) {
+        this.title = title;
+        this.author = author;
+        this.description = description;
+        this.created = LocalDateTime.now();
+        this.lastModified = this.created;
+    }
+
+
 
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public Type getType() { return type; }
-    public void setType(Type type) { this.type = type; }
+    public void setId(Long id) { this.id = id; this.setLastModified(); }
     public String getAuthor() { return author; }
-    public void setAuthor(String author) { this.author = author; }
+    public void setAuthor(String author) { this.author = author; this.setLastModified(); }
     public LocalDateTime getLastModified() { return lastModified; }
     public void setLastModified(LocalDateTime lastModified) { this.lastModified = lastModified; }
+    public void setLastModified() { this.lastModified = LocalDateTime.now(); }
     public LocalDateTime getCreated() { return created; }
-    public void setCreated(LocalDateTime created) { this.created = created; }
+    public void setCreated(LocalDateTime created) { this.created = created; this.setLastModified(); }
     public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description) { this.description = description; this.setLastModified(); }
+    public Long getContentId() { return contentId; }
+    public void setContentId(Long contentId) { this.contentId = contentId; }
     public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
-    public Float getVersion() { return version; }
-    public void setVersion(Float version) { this.version = version; }
+    public void setTitle(String title) { this.title = title; this.setLastModified(); }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", author='" + author + '\'' +
+                ", lastModified=" + lastModified +
+                ", created=" + created +
+                ", description='" + description + '\'' +
+                ", title='" + title + '\'' +
+                '}';
+    }
 }

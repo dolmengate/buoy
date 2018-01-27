@@ -3,6 +3,7 @@ package info.sroman.controllers;
 import info.sroman.model.SocketMessage;
 import info.sroman.entities.Editor;
 import info.sroman.repositories.PostRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,6 @@ public class SocketController {
 
     private Editor editor = new Editor();
 
-    public SocketController(PostRepository repository) { }
 
     // INCOMING
     // "request" endpoint for incoming WebSocket messages to this controller

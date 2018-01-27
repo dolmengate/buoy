@@ -11,8 +11,8 @@ public class Editor {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-    // hash id for url and non-generated id?
     private String text;
+//    private String language;
 
     public Editor() {}
     public Editor(String text) { this.text = text; }
