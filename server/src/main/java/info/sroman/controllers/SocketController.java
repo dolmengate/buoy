@@ -2,8 +2,6 @@ package info.sroman.controllers;
 
 import info.sroman.model.SocketMessage;
 import info.sroman.entities.Editor;
-import info.sroman.repositories.PostRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -13,6 +11,8 @@ public class SocketController {
 
     private Editor editor = new Editor();
 
+    // todo: somehow create endpoints for each concurrent Editor being edited at the time
+    // currently all users edit the same editor
 
     // INCOMING
     // "request" endpoint for incoming WebSocket messages to this controller

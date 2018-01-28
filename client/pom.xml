@@ -18,7 +18,7 @@
 
     <build>
         <plugins>
-            <!-- installs node and npm so maven can package the angular app with the project .jar -->
+            <!-- installs node and npm so maven can instruct npm to package the front-end app -->
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>

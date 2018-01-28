@@ -48,7 +48,7 @@
         <repository>
             <id>org.jboss.repository.releases</id>
             <name>JBoss Maven Release Repository</name>
-            <url>https://repository.jboss.org/nexus/content/info.sroman.repositories/releases</url>
+            <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
         </repository>
     </repositories>
 

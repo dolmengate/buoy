@@ -12,7 +12,7 @@ import {Subscription} from "rxjs/Subscription";
 export class EditorComponent implements OnInit, OnDestroy {
 
   private freshConnect: boolean = true;
-  private editorText: string;
+  public editorText: string;
   private stompSubscription: Subscription;  // to unsubscribe
   public messages: Observable<Message>;
 
@@ -55,7 +55,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleTextareaKeyUp() {
+  handleTextareaKeyUp(event) {
     this.sendMessage();     // send the contents of editorText to update all subscribers
   }
 }
