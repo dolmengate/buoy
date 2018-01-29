@@ -1,0 +1,32 @@
+<div>
+  <form (ngSubmit)="onSubmit()" #newPostForm="ngForm">
+    <label for="title">Title</label>
+    <input id="title" type="text" [(ngModel)]="post.title" name="title" required/>
+        <br />
+    <select
+      id="type"
+      required
+      [(ngModel)]="post.type"
+      name="type"
+   >
+      <option *ngFor="let type of TYPES" [value]="type">
+        {{type}}
+      </option>
+    </select>
+        <br />
+    <label for="author">Author</label>
+    <input id="author" type="text" [(ngModel)]="post.author" name="author" required/>
+        <br />
+    <label for="description">Description</label>
+    <textarea id="description" [(ngModel)]="post.description" name="description"></textarea>
+        <br />
+    <div *ngIf="post">
+        <div *ngIf="post.type === 'TEXT'">
+          <label for="contentText">Post content:</label>
+          <textarea id="contentText" [(ngModel)]="post.contentText" name="contentText" required></textarea>
+        </div>
+    </div>
+        <br />
+    <button type="submit" [disabled]="!newPostForm.form.valid">Create Post</button>
+  </form>
+</div>

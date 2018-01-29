@@ -7,10 +7,11 @@ import { NavigationComponent } from "./navigation/navigation.component";
 import { AppComponent } from './app.component';
 import { EditorComponent } from './editor/editor.component';
 import { IndexComponent } from "./index/index.component";
-import {PostComponent} from "./post/post.component";
+import { PostPageComponent } from "./post-page/post-page.component";
 
 import { StompConfig, StompService } from "@stomp/ng2-stompjs";
 import * as SockJS from "sockjs-client";
+import {NewPostComponent} from "./new-post/new-post.component";
 
 const stompConfig: StompConfig = {
   url: () => new SockJS('/buoy'),
@@ -24,7 +25,8 @@ const stompConfig: StompConfig = {
 // Route order matters
 const appRoutes: Routes = [
   { path: '', component: IndexComponent },
-  { path: 'posts/:id', component: PostComponent },
+  { path: 'posts/:id', component: PostPageComponent },
+  { path: 'newpost', component: NewPostComponent }
 ];
 
 @NgModule({
@@ -33,7 +35,8 @@ const appRoutes: Routes = [
     IndexComponent,
     EditorComponent,
     NavigationComponent,
-    PostComponent
+    PostPageComponent,
+    NewPostComponent
   ],
   imports: [
     BrowserModule,

@@ -1,12 +1,14 @@
 package info.sroman.entities;
 
+import info.sroman.model.Attachment;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Editor {
+public class Editor implements Attachment {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)

@@ -1,0 +1,22 @@
+<div>
+  <div><h4>{{post.title}}</h4></div>
+  <div>by {{post.author}}</div>
+  <div><small>{{post.description}}</small></div>
+  <span>Version: {{post.version}}</span>
+  <span>{{post.created}}</span>
+</div>
+<div>
+  <div *ngIf="post">
+      <div *ngIf="post.type === 'TEXT'">{{post.contentText}}</div>
+      <div *ngIf="post.type === 'CODE'">
+        <app-editor [postId]="post.id"></app-editor>
+      </div>
+  </div>
+  <div>
+    <div *ngFor="let comment of post.comments">
+      <div>{{comment.author}}</div>
+      <div>{{comment.text}}</div>
+      <div *ngFor="let reply of comment.replies">{{reply}}</div>
+    </div>
+  </div>
+</div>

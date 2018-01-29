@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {StompService} from "@stomp/ng2-stompjs";
 import {Message} from "@stomp/stompjs"
 import {Observable} from "rxjs/Observable";
@@ -11,6 +11,7 @@ import {Subscription} from "rxjs/Subscription";
 })
 export class EditorComponent implements OnInit, OnDestroy {
 
+  @Input() postId: number;
   private freshConnect: boolean = true;
   public editorText: string;
   private stompSubscription: Subscription;  // to unsubscribe
@@ -48,14 +49,12 @@ export class EditorComponent implements OnInit, OnDestroy {
     console.log('sending', { freshConnect: this.freshConnect, text: this.editorText });
   }
 
-  handleTextareaKeyDown(event) {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      document.execCommand('insertText', null, '    '); // spaces instead of \t for browser compatibility
-    }
+  handleTextareaKeyDown(event: KeyboardEvent) {
+  event.preventDefault();
+  document.execCommand('insertText', null, '    '); // spaces instead of \t for browser compatibility
   }
 
-  handleTextareaKeyUp(event) {
+  handleTextareaKeyUp() {
     this.sendMessage();     // send the contents of editorText to update all subscribers
   }
 }

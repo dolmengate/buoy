@@ -1,22 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import axios from "axios";
+import {Post} from "../model/Post";
 
 @Component({
   selector: 'app-post',
-  templateUrl: './post.component.html',
-  styleUrls: ['./post.component.css']
+  templateUrl: './post-page.component.html',
+  styleUrls: ['./post-page.component.css']
 })
-export class PostComponent implements OnInit {
+export class PostPageComponent implements OnInit {
+
+  public post: Post;
 
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
     let postId = this.route.snapshot.paramMap.get("id");
     axios.get(`/api/posts/${postId}`, { headers: { "Content-Type": "application/json"} })
-      .then(res => console.log(res.data))
+      .then(res => this.post = res.data)
       .catch(err => console.log(err));
-    // fetch(`/api/posts/${postId}`, { headers })
-    //   .then(res => console.log(res));
   }
 }

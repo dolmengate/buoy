@@ -1,7 +1,10 @@
 package info.sroman.entities;
 
+import info.sroman.model.PostDTO;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 public class Post {
@@ -29,8 +32,6 @@ public class Post {
         this.lastModified = this.created;
     }
 
-
-
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; this.setLastModified(); }
     public String getAuthor() { return author; }
@@ -39,7 +40,7 @@ public class Post {
     public void setLastModified(LocalDateTime lastModified) { this.lastModified = lastModified; }
     public void setLastModified() { this.lastModified = LocalDateTime.now(); }
     public LocalDateTime getCreated() { return created; }
-    public void setCreated(LocalDateTime created) { this.created = created; this.setLastModified(); }
+    public void setCreated() { this.created = LocalDateTime.now(); this.setLastModified(); }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; this.setLastModified(); }
     public Long getContentId() { return contentId; }
@@ -57,5 +58,24 @@ public class Post {
                 ", description='" + description + '\'' +
                 ", title='" + title + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return Objects.equals(id, post.id) &&
+                Objects.equals(author, post.author) &&
+                Objects.equals(title, post.title) &&
+                Objects.equals(description, post.description) &&
+                Objects.equals(contentId, post.contentId) &&
+                Objects.equals(lastModified, post.lastModified) &&
+                Objects.equals(created, post.created);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, author, title, description, contentId, lastModified, created);
     }
 }

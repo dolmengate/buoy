@@ -1,19 +1,51 @@
 package info.sroman.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import info.sroman.entities.Comment;
-import info.sroman.entities.Type;
+import info.sroman.entities.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class PostDTO {
 
-    // Jackson serialization views
-    public interface MetadataOnlyView {};
-    public interface FullView extends MetadataOnlyView {};
+    // Jackson serialization view marker interfaces
+    public interface MetadataOnlyView {}
+    public interface FullView extends MetadataOnlyView {}
 
     public PostDTO() { }
+    public PostDTO(Post p, Content c, Attachment a) {
+        this.id = p.getId();
+        this.author = p.getAuthor();
+        this.title = p.getTitle();
+        this.description = p.getDescription();
+        this.lastModified = p.getLastModified();
+        this.created = p.getCreated();
+
+        this.type = c.getType();
+        this.version = c.getVersion();
+
+        if (a.getClass() == ((Editor)a).getClass())
+            this.editorText = ((Editor)a).getText();
+    }
+    public PostDTO(Post p, Content c) {
+        this.id = p.getId();
+        this.author = p.getAuthor();
+        this.title = p.getTitle();
+        this.description = p.getDescription();
+        this.lastModified = p.getLastModified();
+        this.created = p.getCreated();
+
+        this.type = c.getType();
+        this.version = c.getVersion();
+        this.contentText = c.getText();
+    }
+    public PostDTO(String author, String title, String description, LocalDateTime lastModified, LocalDateTime created) {
+        this.author = author;
+        this.title = title;
+        this.description = description;
+        this.lastModified = lastModified;
+        this.created = created;
+    }
     public PostDTO(String author, String title, String description, Type type, Float version, String contentText, String editorText) {
         this.author = author;
         this.title = title;
@@ -41,6 +73,7 @@ public class PostDTO {
     private String editorText;
 
     // Comments
+    private Integer numComments;
     private List<Comment> comments;
 
     // File attributes
@@ -79,6 +112,9 @@ public class PostDTO {
     @JsonView(FullView.class)
     public List<Comment> getComments() { return comments; }
 
+    @JsonView(MetadataOnlyView.class)
+    public Integer getNumComments() { return numComments; }
+
     public void setId(Long id) { this.id = id; }
     public void setAuthor(String author) { this.author = author; }
     public void setTitle(String title) { this.title = title; }
@@ -89,7 +125,8 @@ public class PostDTO {
     public void setVersion(Float version) { this.version = version; }
     public void setContentText(String contentText) { this.contentText = contentText; }
     public void setEditorText(String editorText) { this.editorText = editorText; }
-    public void setComments(List<Comment> comments) { this.comments = comments; }
+    public void setComments(List<Comment> comments) { this.comments = comments; this.setNumComments(this.comments.size()); }
+    private void setNumComments(Integer numComments) { this.numComments = numComments; }
 
     @Override
     public String toString() {

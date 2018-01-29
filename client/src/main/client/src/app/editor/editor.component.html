@@ -3,7 +3,7 @@
   cols="80"
   rows="40"
   [(ngModel)]="editorText"
-  (keydown)="handleTextareaKeyDown($event)"
-  (keyup)="handleTextareaKeyUp($event)"
+  (keydown.tab)="handleTextareaKeyDown($event)"
+  (keyup)="handleTextareaKeyUp()"
 >
 </textarea>
