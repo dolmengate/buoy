@@ -12,6 +12,7 @@ import {Subscription} from "rxjs/Subscription";
 export class EditorComponent implements OnInit, OnDestroy {
 
   @Input() postId: number;
+  private editorId: number;
   private freshConnect: boolean = true;
   public editorText: string;
   private stompSubscription: Subscription;  // to unsubscribe
@@ -37,16 +38,18 @@ export class EditorComponent implements OnInit, OnDestroy {
   }
 
   onMessageReceived = (frame: Message) => {
-    this.editorText = JSON.parse(frame.body).text;  // update property editorText
+    const res = JSON.parse(frame.body);
+    this.editorText = res.text;  // update property editorText
+    this.editorId = res.editorId;
     console.log('received', frame.body);
   };
 
   sendMessage() {
     this.stompService.publish(
       '/app/message',
-      JSON.stringify({ freshConnect: this.freshConnect, text: this.editorText } )
+      JSON.stringify({ freshConnect: this.freshConnect, text: this.editorText, postId: this.postId, editorId: this.editorId } )
     );
-    console.log('sending', { freshConnect: this.freshConnect, text: this.editorText });
+    console.log('sending',{ freshConnect: this.freshConnect, text: this.editorText, postId: this.postId, editorId: this.editorId } );
   }
 
   handleTextareaKeyDown(event: KeyboardEvent) {
