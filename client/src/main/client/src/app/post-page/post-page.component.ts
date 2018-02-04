@@ -4,7 +4,7 @@ import axios from "axios";
 import {Post} from "../model/Post";
 
 @Component({
-  selector: 'app-post',
+  selector: 'app-post-page',
   templateUrl: './post-page.component.html',
   styleUrls: ['./post-page.component.css']
 })
@@ -15,9 +15,11 @@ export class PostPageComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
-    let postId = this.route.snapshot.paramMap.get("id");
+    const postId = this.route.snapshot.paramMap.get("id");
     axios.get(`/api/posts/${postId}`, { headers: { "Content-Type": "application/json"} })
       .then(res => this.post = res.data)
       .catch(err => console.log(err));
   }
 }
+
+//fixme: comments not showing

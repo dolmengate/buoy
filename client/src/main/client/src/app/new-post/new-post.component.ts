@@ -9,7 +9,7 @@ import axios from "axios";
 })
 export class NewPostComponent implements OnInit {
 
-  TYPES: string[] = ['CODE', 'TEXT'];
+  TYPES: string[] = ['EDITOR', 'TEXT'];
   post: Post;
 
   constructor() { }

@@ -2,41 +2,35 @@ package info.sroman.entities;
 
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 public class Comment {
 
     public Comment() { }
-    public Comment(String text, String author, Long postId) {
+    public Comment(String text, String author, Post post) {
         this.text = text;
         this.author = author;
-        this.postId = postId;
         this.created = LocalDateTime.now();
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long commentId;
+
     private String text;
     private String author;
-    private Long postId; // FK
 
     @CreatedDate
     private LocalDateTime created;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getCommentId() { return commentId; }
+    public void setCommentId(Long commentId) { this.commentId = commentId; }
     public String getText() { return text; }
     public void setText(String text) { this.text = text; }
     public String getAuthor() { return author; }
     public void setAuthor(String author) { this.author = author; }
-    public Long getPostId() { return postId; }
-    public void setPostId(Long postId) { this.postId = postId; }
     public LocalDateTime getCreated() { return created; }
     public void setCreated(LocalDateTime created) { this.created = created; }
 }

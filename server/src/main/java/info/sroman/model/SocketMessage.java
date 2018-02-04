@@ -4,7 +4,6 @@ import info.sroman.entities.Editor;
 
 public class SocketMessage {
     private String text;
-    private String error;
     private boolean freshConnect;
     private Long postId;
     private Long editorId;  // get this
@@ -16,7 +15,7 @@ public class SocketMessage {
     }
     public SocketMessage(Editor editor) {
         this.text = editor.getText();
-        this.editorId = editor.getId();
+        this.editorId = editor.getAttachmentId();
         this.freshConnect = false;
     }
 

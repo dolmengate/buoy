@@ -1,10 +1,7 @@
 package info.sroman.controllers;
 
-import info.sroman.entities.Content;
-import info.sroman.entities.Type;
 import info.sroman.model.SocketMessage;
 import info.sroman.entities.Editor;
-import info.sroman.repositories.ContentRepository;
 import info.sroman.repositories.EditorRepository;
 import info.sroman.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +19,11 @@ public class SocketController {
     PostRepository postsRepo;
 
     @Autowired
-    ContentRepository contentsRepo;
-
-    @Autowired
     EditorRepository editorsRepo;
 
     private HashSet<Editor> editorsCache = new HashSet<>();
     // todo: periodically check editors to see if anyone has used it in a while, if not remove from editors -- lastTouched property?
-
+    // fixme: all active editors are being updated when any other editor is opened for use
     // INCOMING
     // "request" endpoint for incoming WebSocket messages to this controller
     // ("app/message" due to application destination prefixes in config")
@@ -38,6 +32,7 @@ public class SocketController {
     // "response" endpoint to push outgoing WebSocket messages to. Clients subscribe to this endpoint to see messages
     @SendTo("/topic/editor")
     public SocketMessage sendMessage(SocketMessage incomingMessage) {
+        // ---- incoming messages will always have postId ----
 
         // check 'editorsCache' set before pulling editor text from DB
         Editor requestedEditor = checkForActiveEditor(incomingMessage);
@@ -58,22 +53,16 @@ public class SocketController {
                 return new SocketMessage("Could not find editor, please refresh.");
             }
             return new SocketMessage(requestedEditor); // sends text and editorId
+            // todo: send back postId with outgoing message
         }
     }
 
     private Editor checkForActiveEditor(SocketMessage request) {
         if (request.getEditorId() == null) {
-            return getEditorFromSet(findEditorIdByPostId(request.getPostId()));
+            return getEditorFromSet(editorsRepo.findOneByPostId(request.getPostId()).getAttachmentId());
         } else {
             return getEditorFromSet(request.getEditorId());
         }
-    }
-
-    private Long findEditorIdByPostId(Long postId) {
-        Content c = contentsRepo.findOne(postsRepo.findOne(postId).getContentId());
-        if (c.getType() == Type.CODE)
-            return c.getAttachmentId();
-        return null;
     }
 
     private Editor getEditorFromSet(Long editorId) {
@@ -81,7 +70,7 @@ public class SocketController {
         Editor e;
         while (iter.hasNext()) {
             e = iter.next();
-            if (e.getId().equals(editorId)) { // request message has no editorId yet
+            if (e.getAttachmentId().equals(editorId)) { // request message has no editorId yet
                 return e;
             }
         }
@@ -89,12 +78,10 @@ public class SocketController {
     }
 
     private Editor retrieveEditorFromRepo(SocketMessage request) {
-        // use editorId if possible
+        // prefer editorId (no table joins required)
         if (request.getEditorId() != null) {
             return editorsRepo.findOne(request.getEditorId());
         }
-        // fixme: awful -- at least it only has to do this once before the client has the editorId
-        // otherwise use postId
-        return editorsRepo.findOne(contentsRepo.findOne(postsRepo.findOne(request.getPostId()).getContentId()).getAttachmentId());
+        return editorsRepo.findOneByPostId(request.getPostId());
     }
 }

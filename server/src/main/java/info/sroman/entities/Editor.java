@@ -1,35 +1,30 @@
 package info.sroman.entities;
 
-import info.sroman.model.Attachment;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
-public class Editor implements Attachment {
+public class Editor extends Attachment {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+    @OneToOne(fetch=FetchType.EAGER, mappedBy="editor")
+    private Content content;
+
     private String text;
 //    private String language;
 
-    public Editor() {}
-    public Editor(String text) { this.text = text; }
+    public Editor() { super(); }
+    public Editor(String text) { super(); this.text = text; }
 
     public String getText() { return text; }
     public void setText(String text) { this.text = text; }
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Content getContent() { return content; }
+    public void setContent(Content content) { this.content = content; }
 
     @Override
     public String toString() {
         return "Editor{" +
-                "id=" + id +
+                "content=" + content +
                 ", text='" + text + '\'' +
+                ", attachmentId=" + attachmentId +
                 '}';
     }
 }

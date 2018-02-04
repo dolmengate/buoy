@@ -8,7 +8,7 @@
     </div>
     <div>
       <div *ngIf="post.type === 'TEXT'">{{post.contentText}}</div>
-      <div *ngIf="post.type === 'CODE'">
+      <div *ngIf="post.type === 'EDITOR'">
         <app-editor [postId]="post.id"></app-editor>
       </div>
       <div>

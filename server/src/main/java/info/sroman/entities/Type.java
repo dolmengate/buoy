@@ -2,7 +2,7 @@ package info.sroman.entities;
 
 public enum Type {
 
-    CODE("CODE"),
+    EDITOR("EDITOR"),
     IMAGE("IMAGE"),
     TEXT("TEXT");
     //ZIP("ZIP") TODO: add zip Type to Posts?

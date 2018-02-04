@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -23,9 +24,6 @@ public class ApiController {
     PostRepository posts;
 
     @Autowired
-    ContentRepository contents;
-
-    @Autowired
     EditorRepository editors;
 
     @Autowired
@@ -33,60 +31,38 @@ public class ApiController {
 
     private static final Logger log = LoggerFactory.getLogger(ApiController.class);
 
+    // todo: pagination and sorting
     @GetMapping(path="/posts") // /posts/page/{pageId}
     @JsonView(PostDTO.MetadataOnlyView.class)
     public List<PostDTO> getAllPosts() {
         List<Post> allPosts = (List<Post>)posts.findAll();
-        List<PostDTO> allPostDTOs = new LinkedList<>();
-        for (Post post : allPosts) {
-            Content c = contents.findOne(post.getContentId());
-            Editor e;
-            if (c.getType() == Type.CODE) {
-                e = editors.findOne(c.getAttachmentId());
-                allPostDTOs.add(new PostDTO(post, c, e));
-            } else {
-                allPostDTOs.add(new PostDTO(post, c));
-            }
-        }
-        // todo: pagination and sorting
-        return allPostDTOs;
+        return allPosts.stream().map(PostDTO::new).collect(Collectors.toList());
     }
 
-    @GetMapping(path="/posts/{postId}")       // consumes="application/json"
+    @GetMapping(path="/posts/{postId}")
     @JsonView(PostDTO.FullView.class)
     public PostDTO getPostById(@PathVariable String postId) {
-
-        PostDTO post;
-
-        Post p = posts.findOne(Long.parseLong(postId));
-        Content c = contents.findOne(p.getContentId());
-        Editor e;
-        if (c.getType() == Type.CODE) {
-            e = editors.findOne(c.getAttachmentId());
-            post = new PostDTO(p, c, e);
-        } else {
-            post = new PostDTO(p, c);
-        }
-        post.setComments(comments.findCommentByPostId(p.getId()));
-        return post;
+        return new PostDTO(posts.findOne(Long.parseLong(postId)));
     }
 
-    @PostMapping(path="/posts/new") // consumes="application/json"
+    @PostMapping(path="/posts/new")
     @ResponseStatus(HttpStatus.CREATED)
     public void newPost(@RequestBody @Validated PostForm post) {
 
         Post p = new Post(post.getTitle(), post.getAuthor(), post.getDescription());
-        p.setCreated();
         Content c = new Content(post.getType(), post.getContentText(), post.getVersion());
-        if (post.getType() == Type.CODE) {
+        if (post.getType() == Type.EDITOR) {
             Editor e = new Editor();
-            c.setAttachmentId(editors.save(e).getId());
-            p.setContentId(contents.save(c).getId());
-        } else if (post.getType() == Type.TEXT) {
-            p.setContentId(contents.save(c).getId());
+            c.setEditor(e);
         }
+        p.setContent(c);
         posts.save(p);
     }
 
-    // todo: create endpoints for GET initial editor text for CODE posts
+    // todo: save content and increment version
+//    @PostMapping(path="/posts/save/{postId}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public void updatePost(@PathVariable String postId, @RequestBody PostDTO post) {
+//
+//    }
 }

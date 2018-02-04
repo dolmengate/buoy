@@ -1,28 +1,41 @@
 package info.sroman.entities;
 
-import info.sroman.model.PostDTO;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.List;
 
 @Entity
 public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long postId;
 
     private String author;
     private String title;
     private String description;
 
-    private Long contentId;
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="contentId")
+    private Content content;
+
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="commentId")
+    private List<Comment> comments;
 
     private LocalDateTime lastModified;
     private LocalDateTime created;
 
-    public Post() { }
+    public Post() { setCreated(); }
+
+    public Post(String title, String author, String description, Content content) {
+        this.title = title;
+        this.author = author;
+        this.description = description;
+        this.content = content;
+        this.created = LocalDateTime.now();
+        this.lastModified = this.created;
+    }
 
     public Post(String title, String author, String description) {
         this.title = title;
@@ -32,8 +45,8 @@ public class Post {
         this.lastModified = this.created;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; this.setLastModified(); }
+    public Long getPostId() { return postId; }
+    public void setPostId(Long postId) { this.postId = postId; this.setLastModified(); }
     public String getAuthor() { return author; }
     public void setAuthor(String author) { this.author = author; this.setLastModified(); }
     public LocalDateTime getLastModified() { return lastModified; }
@@ -43,39 +56,8 @@ public class Post {
     public void setCreated() { this.created = LocalDateTime.now(); this.setLastModified(); }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; this.setLastModified(); }
-    public Long getContentId() { return contentId; }
-    public void setContentId(Long contentId) { this.contentId = contentId; }
+    public Content getContent() { return content; }
+    public void setContent(Content content) { this.content = content; }
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; this.setLastModified(); }
-
-    @Override
-    public String toString() {
-        return "Post{" +
-                "id=" + id +
-                ", author='" + author + '\'' +
-                ", lastModified=" + lastModified +
-                ", created=" + created +
-                ", description='" + description + '\'' +
-                ", title='" + title + '\'' +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Post post = (Post) o;
-        return Objects.equals(id, post.id) &&
-                Objects.equals(author, post.author) &&
-                Objects.equals(title, post.title) &&
-                Objects.equals(description, post.description) &&
-                Objects.equals(contentId, post.contentId) &&
-                Objects.equals(lastModified, post.lastModified) &&
-                Objects.equals(created, post.created);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, author, title, description, contentId, lastModified, created);
-    }
 }

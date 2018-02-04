@@ -13,47 +13,18 @@ public class PostDTO {
     public interface FullView extends MetadataOnlyView {}
 
     public PostDTO() { }
-    public PostDTO(Post p, Content c, Attachment a) {
-        this.id = p.getId();
+    public PostDTO(Post p) {
+        this.id = p.getPostId();
         this.author = p.getAuthor();
         this.title = p.getTitle();
         this.description = p.getDescription();
         this.lastModified = p.getLastModified();
         this.created = p.getCreated();
 
-        this.type = c.getType();
-        this.version = c.getVersion();
+        this.type = p.getContent().getType();
+        this.version = p.getContent().getVersion();
 
-        if (a.getClass() == ((Editor)a).getClass())
-            this.editorText = ((Editor)a).getText();
-    }
-    public PostDTO(Post p, Content c) {
-        this.id = p.getId();
-        this.author = p.getAuthor();
-        this.title = p.getTitle();
-        this.description = p.getDescription();
-        this.lastModified = p.getLastModified();
-        this.created = p.getCreated();
-
-        this.type = c.getType();
-        this.version = c.getVersion();
-        this.contentText = c.getText();
-    }
-    public PostDTO(String author, String title, String description, LocalDateTime lastModified, LocalDateTime created) {
-        this.author = author;
-        this.title = title;
-        this.description = description;
-        this.lastModified = lastModified;
-        this.created = created;
-    }
-    public PostDTO(String author, String title, String description, Type type, Float version, String contentText, String editorText) {
-        this.author = author;
-        this.title = title;
-        this.description = description;
-        this.type = type;
-        this.version = version;
-        this.contentText = contentText;
-        this.editorText = editorText;
+        this.editorText = p.getContent().getEditor().getText();
     }
 
     // Post attributes
