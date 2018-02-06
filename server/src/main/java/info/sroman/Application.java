@@ -20,12 +20,12 @@ public class Application {
     public CommandLineRunner run(PostRepository posts, ContentRepository contents, EditorRepository editors, CommentRepository comments) {
         return (args) -> {
             Post p = posts.save(new Post(
-                    "my titel",
-                    "chadimus",
-                    "the description",
-                    new Content(new Editor("codezcodezcodezcodezcodez"), Type.EDITOR, null, 1.0F)
+                "my titel",
+                "chadimus",
+                "the description",
+                new Content(new Editor("codezcodezcodezcodezcodez"), Type.EDITOR, null, 1.0F),
+                new Comment("comment text", "virginia")
             ));
-            comments.save(new Comment("comment text", "the virgin", p));
         };
     }
 }

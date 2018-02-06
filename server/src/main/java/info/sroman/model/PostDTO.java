@@ -24,6 +24,8 @@ public class PostDTO {
         this.type = p.getContent().getType();
         this.version = p.getContent().getVersion();
 
+        this.comments = p.getComments();
+
         this.editorText = p.getContent().getEditor().getText();
     }
 

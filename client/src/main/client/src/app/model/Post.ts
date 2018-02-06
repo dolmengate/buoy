@@ -1,16 +1,18 @@
+import {Comment} from "./Comment";
+
 export class Post {
-  public id: number = null;
-  public author: string = '';
-  public title: string = '';
-  public description: string = '';
-  public created: Date = null;
-  public lastModified: Date = null;
-  public type: string = 'CODE';
-  public version: number = 1.0;
-  public comments: Comment[] = [];
-  public get numComments(): number { return this.comments.length; };
+  public id: number;
+  public author: string;
+  public title: string;
+  public description: string;
+  public created: Date;
+  public lastModified: Date;
+  public type: string;
+  public version: number;
+  public comments: Comment[];
+  public get numComments(): number { if (this.comments === null) return 0; return this.comments.length; };
 
   // fixme: Attachment vars - temporary
   contentText: string = '';
-  editorText: string = '';
+  editorText: string;
 }

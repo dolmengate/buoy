@@ -3,6 +3,7 @@ package info.sroman.entities;
 import javax.persistence.*;
 
 @Entity
+@Table(name="editors")
 public class Editor extends Attachment {
 
     @OneToOne(fetch=FetchType.EAGER, mappedBy="editor")

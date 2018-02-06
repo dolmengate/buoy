@@ -2,9 +2,11 @@ package info.sroman.entities;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
+@Table(name="posts")
 public class Post {
 
     @Id
@@ -15,18 +17,30 @@ public class Post {
     private String title;
     private String description;
 
+    // cascade: propagate EntityManager operations to all related entities (works both up and down the chain of relationships)
     @OneToOne(cascade=CascadeType.ALL)
+    // @JoinColumn(name="relatedEntityPK"): this column is a FK to the related entity
     @JoinColumn(name="contentId")
     private Content content;
 
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="commentId")
+    // no mappedBy: Comment.post has no @JoinColumn annotation: this relationship is one-way: one to many
+    @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
     private List<Comment> comments;
 
     private LocalDateTime lastModified;
     private LocalDateTime created;
 
     public Post() { setCreated(); }
+
+    public Post(String title, String author, String description, Content content, Comment... comments) {
+        this.title = title;
+        this.author = author;
+        this.description = description;
+        this.content = content;
+        this.created = LocalDateTime.now();
+        this.lastModified = this.created;
+        this.comments = Arrays.asList(comments);
+    }
 
     public Post(String title, String author, String description, Content content) {
         this.title = title;
@@ -58,6 +72,22 @@ public class Post {
     public void setDescription(String description) { this.description = description; this.setLastModified(); }
     public Content getContent() { return content; }
     public void setContent(Content content) { this.content = content; }
+    public List<Comment> getComments() { return comments; }
+    public void setComments(List<Comment> comments) { this.comments = comments; }
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; this.setLastModified(); }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "postId=" + postId +
+                ", author='" + author + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", content=" + content +
+                ", comments=" + comments +
+                ", lastModified=" + lastModified +
+                ", created=" + created +
+                '}';
+    }
 }

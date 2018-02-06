@@ -6,10 +6,11 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name="comments")
 public class Comment {
 
-    public Comment() { }
-    public Comment(String text, String author, Post post) {
+    private Comment() { }
+    public Comment(String text, String author) {
         this.text = text;
         this.author = author;
         this.created = LocalDateTime.now();
@@ -21,6 +22,10 @@ public class Comment {
 
     private String text;
     private String author;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    // no @JoinColumn: this relationship is one-way: from the one to the many (post to comment)
+    private Post post;
 
     @CreatedDate
     private LocalDateTime created;

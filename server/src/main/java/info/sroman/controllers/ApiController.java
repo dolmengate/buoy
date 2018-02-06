@@ -9,10 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +40,6 @@ public class ApiController {
     }
 
     @GetMapping(path="/posts/{postId}")
-    @JsonView(PostDTO.FullView.class)
     public PostDTO getPostById(@PathVariable String postId) {
         return new PostDTO(posts.findOne(Long.parseLong(postId)));
     }
@@ -59,10 +58,16 @@ public class ApiController {
         posts.save(p);
     }
 
-    // todo: save content and increment version
-//    @PostMapping(path="/posts/save/{postId}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public void updatePost(@PathVariable String postId, @RequestBody PostDTO post) {
-//
-//    }
+    @PostMapping(path="/posts/save/{postId}")
+    public PostDTO updateContentAndIncrementVersion(@PathVariable String postId, @RequestBody PostDTO pDTO) {
+        Post post = posts.findOne(Long.parseLong(postId));
+
+        // increment Content version
+        post.getContent().setVersion(post.getContent().getVersion() + 0.1F);
+
+        // update Editor text
+        post.getContent().getEditor().setText(pDTO.getEditorText());
+
+        return new PostDTO(posts.save(post));
+    }
 }

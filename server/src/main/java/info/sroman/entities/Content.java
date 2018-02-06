@@ -3,9 +3,10 @@ package info.sroman.entities;
 import javax.persistence.*;
 
 @Entity
+@Table(name="post_contents")
 public class Content {
 
-    public Content() { }
+    private Content() { }
 
     public Content(Type type, String text, Float version) {
         this.type = type;
@@ -24,6 +25,7 @@ public class Content {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long contentId;
 
+    // fetch=FetchType.EAGER: load post immediately (don't wait for the .getPost() method to be called)
     @OneToOne(fetch=FetchType.EAGER, mappedBy="content")
     private Post post;
 
