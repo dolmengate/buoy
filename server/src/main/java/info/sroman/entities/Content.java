@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name="post_contents")
 public class Content {
 
-    private Content() { }
+    public Content() { }
 
     public Content(Type type, String text, Float version) {
         this.type = type;
@@ -39,7 +39,7 @@ public class Content {
     private Float version;
 
     public Long getContentId() { return contentId; }
-    public void setcontentId(Long contentId) { this.contentId = contentId; }
+    public void setContentId(Long contentId) { this.contentId = contentId; }
     public Post getPost() { return post; }
     public void setPost(Post post) { this.post = post; }
     public Editor getEditor() { return editor; }

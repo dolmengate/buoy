@@ -28,6 +28,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.stompSubscription = this.messages.subscribe(this.onMessageReceived);
     // fixme: this sucks - wait for the connection to be established before sending the first message
     setTimeout(() => {
+      // get initial editor content
       this.sendMessage();
       this.freshConnect = false;
     }, 2000);
@@ -39,9 +40,13 @@ export class EditorComponent implements OnInit, OnDestroy {
 
   onMessageReceived = (frame: Message) => {
     const res = JSON.parse(frame.body);
-    this.editorText = res.text;  // update property editorText
-    this.editorId = res.editorId;
-    console.log('received', frame.body);
+
+    // only update this editor if the message is for it
+    if (res.postId === this.postId) {
+      this.editorText = res.text;
+      this.editorId = res.editorId; // server prefers editorId for editor lookup
+    }
+    console.log('received', res);
   };
 
   sendMessage() {

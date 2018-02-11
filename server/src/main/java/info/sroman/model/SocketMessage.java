@@ -16,6 +16,7 @@ public class SocketMessage {
     public SocketMessage(Editor editor) {
         this.text = editor.getText();
         this.editorId = editor.getAttachmentId();
+        this.postId = editor.getContent().getPost().getPostId();    // fixme: db query in SocketMessage constructor?
         this.freshConnect = false;
     }
 

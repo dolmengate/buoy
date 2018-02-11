@@ -14,7 +14,6 @@ public class PostForm {
     @NotNull
     private String title;
 
-    @NotNull
     private String description;
 
     private LocalDateTime lastModified;
@@ -26,6 +25,7 @@ public class PostForm {
 
     @DecimalMin("1.0")
     private Float version;
+
     private String contentText;
 
     public String getAuthor() { return author; }

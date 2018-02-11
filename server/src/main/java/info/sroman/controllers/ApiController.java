@@ -46,11 +46,11 @@ public class ApiController {
 
     @PostMapping(path="/posts/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public void newPost(@RequestBody @Validated PostForm post) {
+    public void newPost(@RequestBody @Validated PostForm form) {
 
-        Post p = new Post(post.getTitle(), post.getAuthor(), post.getDescription());
-        Content c = new Content(post.getType(), post.getContentText(), post.getVersion());
-        if (post.getType() == Type.EDITOR) {
+        Post p = new Post(form.getTitle(), form.getAuthor(), form.getDescription());
+        Content c = new Content(form.getType(), form.getContentText(), 1.0F);
+        if (form.getType() == Type.EDITOR) {
             Editor e = new Editor();
             c.setEditor(e);
         }
