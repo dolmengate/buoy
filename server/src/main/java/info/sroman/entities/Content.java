@@ -26,6 +26,7 @@ public class Content {
     private Long contentId;
 
     // fetch=FetchType.EAGER: load post immediately (don't wait for the .getPost() method to be called)
+    // mappedBy="relatedColumn": column or attribute in related entity -- creates two-way relationship
     @OneToOne(fetch=FetchType.EAGER, mappedBy="content")
     private Post post;
 

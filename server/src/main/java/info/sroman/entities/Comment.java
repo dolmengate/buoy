@@ -10,10 +10,16 @@ import java.time.LocalDateTime;
 public class Comment {
 
     private Comment() { }
-    public Comment(String text, String author) {
+    public Comment(String author, String text) {
         this.text = text;
         this.author = author;
         this.created = LocalDateTime.now();
+    }
+    public Comment(String author, String text, Comment replyTo) {
+        this.text = text;
+        this.author = author;
+        this.created = LocalDateTime.now();
+        this.replyTo = replyTo;
     }
 
     @Id
@@ -27,6 +33,9 @@ public class Comment {
     // no @JoinColumn: this relationship is one-way: from the one to the many (post to comment)
     private Post post;
 
+    @ManyToOne(fetch=FetchType.EAGER)
+    private Comment replyTo;
+
     @CreatedDate
     private LocalDateTime created;
 
@@ -36,6 +45,23 @@ public class Comment {
     public void setText(String text) { this.text = text; }
     public String getAuthor() { return author; }
     public void setAuthor(String author) { this.author = author; }
+    public Post getPost() { return post; }
+    public void setPost(Post post) { this.post = post; }
     public LocalDateTime getCreated() { return created; }
     public void setCreated(LocalDateTime created) { this.created = created; }
+    public Comment getReplyTo() { return replyTo; }
+    public void setReplyTo(Comment replyTo) { this.replyTo = replyTo; }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "commentId=" + commentId +
+                ", text='" + text + '\'' +
+                ", author='" + author + '\'' +
+                ", post=" + post +
+                ", replyTo=" + replyTo +
+                ", created=" + created +
+                '}';
+    }
 }
+

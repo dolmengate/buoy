@@ -21,7 +21,7 @@ public class SocketController {
     @Autowired
     EditorRepository editorsRepo;
 
-    private HashSet<Editor> editorsCache = new HashSet<>();
+    private HashSet<Editor> editorsCache = new HashSet<>(); // todo: change to map using editorId as key
     // todo: periodically check editors to see if anyone has used it in a while, if not remove from editors -- lastTouched property?
 
     /**

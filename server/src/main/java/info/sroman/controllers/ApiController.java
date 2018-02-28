@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +39,7 @@ public class ApiController {
     }
 
     @GetMapping(path="/posts/{postId}")
+//    @JsonView(PostDTO.MetadataOnlyView.class)
     public PostDTO getPostById(@PathVariable String postId) {
         return new PostDTO(posts.findOne(Long.parseLong(postId)));
     }

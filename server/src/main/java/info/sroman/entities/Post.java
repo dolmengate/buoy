@@ -2,6 +2,7 @@ package info.sroman.entities;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,11 +20,12 @@ public class Post {
 
     // cascade: propagate EntityManager operations to all related entities (works both up and down the chain of relationships)
     @OneToOne(cascade=CascadeType.ALL)
-    // @JoinColumn(name="relatedEntityPK"): this column is a FK to the related entity
+    // @JoinColumn(name="relatedEntity"): this column is a FK to the related entity
     @JoinColumn(name="contentId")
     private Content content;
 
     // no mappedBy: Comment.post has no @JoinColumn annotation: this relationship is one-way: one to many
+    // fetch=FetchType.EAGER: selections will automatically get and construct all contained entities
     @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
     private List<Comment> comments;
 
@@ -39,7 +41,7 @@ public class Post {
         this.content = content;
         this.created = LocalDateTime.now();
         this.lastModified = this.created;
-        this.comments = Arrays.asList(comments);
+        this.comments = new ArrayList<>(Arrays.asList(comments));
     }
 
     public Post(String title, String author, String description, Content content) {

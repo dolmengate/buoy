@@ -14,6 +14,7 @@ public interface PostRepository extends CrudRepository<Post, Long> {
             "INNER JOIN c.editor e " +
             "WHERE e.attachmentId = :eId")
     Post findOneByEditorId(@Param("eId") Long editorId);
+
     List<Post> findByPostId(Long id);
     List<Post> findByTitle(String title);
     List<Post> findByAuthor(String author);
