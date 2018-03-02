@@ -6,7 +6,7 @@ public class SocketMessage {
     private String text;
     private boolean freshConnect;
     private Long postId;
-    private Long editorId;  // get this
+    private Long editorId;
 
     public SocketMessage() {}
     public SocketMessage(String text) {
@@ -31,9 +31,11 @@ public class SocketMessage {
 
     @Override
     public String toString() {
-        return "SocketSocketMessage{" +
+        return "SocketMessage{" +
                 "text='" + text + '\'' +
                 ", freshConnect=" + freshConnect +
+                ", postId=" + postId +
+                ", editorId=" + editorId +
                 '}';
     }
 }

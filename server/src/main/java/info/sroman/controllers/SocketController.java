@@ -9,8 +9,10 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
+import javax.validation.constraints.Null;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 @Controller
 public class SocketController {
@@ -23,6 +25,8 @@ public class SocketController {
 
     private HashSet<Editor> editorsCache = new HashSet<>(); // todo: change to map using editorId as key
     // todo: periodically check editors to see if anyone has used it in a while, if not remove from editors -- lastTouched property?
+
+    private Logger log = Logger.getLogger("SocketController");
 
     /**
      * Accepts incoming socket messages sent to /api/message and broadcasts responses to /topic/editor.
@@ -45,19 +49,19 @@ public class SocketController {
         Editor requestedEditor = checkForActiveEditor(incomingMessage);
 
         if (incomingMessage.isFreshConnect()) {
-            if (requestedEditor == null) {
+            if (requestedEditor == null) {      // editor could not be found in editorsCache
                 requestedEditor = retrieveEditorFromRepo(incomingMessage);
                 editorsCache.add(requestedEditor);
             }
-            return new SocketMessage(requestedEditor);
         } else {    // at least one user is actively modifying editor text
             try {
                 requestedEditor.setText(incomingMessage.getText()); // update editor text
             } catch (NullPointerException ex) {
+                log.warning("Editor not found.");
                 return new SocketMessage("Could not find editor, please refresh.");
             }
-            return new SocketMessage(requestedEditor);
         }
+        return new SocketMessage(requestedEditor);
     }
 
     /**
@@ -66,10 +70,15 @@ public class SocketController {
      * @return          The requested Editor or null if none was found.
      */
     private Editor checkForActiveEditor(SocketMessage request) {
-        if (request.getEditorId() == null) {
-            return getEditorFromSet(editorsRepo.findOneByPostId(request.getPostId()).getAttachmentId());
-        }
+        try {
+            if (request.getEditorId() == null)  // editorId will have to be found with postId
+                return getEditorFromSet(editorsRepo.findOneByPostId(request.getPostId()).getAttachmentId());
             return getEditorFromSet(request.getEditorId());
+        } catch (NullPointerException | NumberFormatException ex) {
+            log.warning("SocketMessage: " + request);
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -95,7 +104,7 @@ public class SocketController {
         Editor e;
         while (iter.hasNext()) {
             e = iter.next();
-            if (e.getAttachmentId().equals(editorId)) { // request message has no editorId yet
+            if (e.getAttachmentId().equals(editorId)) {
                 return e;
             }
         }

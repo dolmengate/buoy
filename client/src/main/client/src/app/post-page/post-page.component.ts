@@ -15,19 +15,18 @@ export class PostPageComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
-    const postId = this.route.snapshot.paramMap.get("id");
+    const postId = this.route.snapshot.paramMap.get("postId");
     axios.get(`/api/posts/${postId}`, { headers: { "Content-Type": "application/json"} })
       .then(res => {
-        console.log('data', res.data);
-        this.post = this.formatPostDates(res.data);
+        this.post = Post.getInstance(res.data);
+        console.log("this post: ", this.post);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
   }
 
   saveAndIncrement() {
-    axios.post(`/api/posts/save/${this.post.id}`, { headers: { "Content-Type": "application/json"} })
+    axios.post(`/api/posts/save/${this.post.postId}`, { headers: { "Content-Type": "application/json"} })
       .then(res => {
-        console.log('data', res.data);
         this.post = this.formatPostDates(res.data);
       })
       .catch(err => console.log(err));
@@ -37,9 +36,11 @@ export class PostPageComponent implements OnInit {
     postData.created = new Date(postData.created.nano);
     postData.lastModified = new Date(postData.lastModified.nano);
 
-    postData.comments.forEach(comment => {
-      comment.created = new Date(comment.created.nano)
-    });
+    if (postData.comments !== undefined) {
+      postData.comments.forEach(comment => {
+        comment.created = new Date(comment.created.nano)
+      });
+    }
     return postData;
   }
 }

@@ -8,13 +8,15 @@ import java.util.List;
 
 public class PostDTO {
 
+    //fixme: just send the editor id from the get-go: add editorId attribute
+
     // Jackson serialization view marker interfaces
     public interface MetadataOnlyView {}
     public interface FullView extends MetadataOnlyView {}
 
     public PostDTO() { }
     public PostDTO(Post p) {
-        this.id = p.getPostId();
+        this.postId = p.getPostId();
         this.author = p.getAuthor();
         this.title = p.getTitle();
         this.description = p.getDescription();
@@ -30,7 +32,7 @@ public class PostDTO {
     }
 
     // Post attributes
-    private Long id;
+    private Long postId;
     private String author;
     private String title;
     private String description;
@@ -53,7 +55,7 @@ public class PostDTO {
     // ...
 
     @JsonView(MetadataOnlyView.class)
-    public Long getId() { return id; }
+    public Long getPostId() { return postId; }
 
     @JsonView(MetadataOnlyView.class)
     public String getAuthor() { return author; }
@@ -88,7 +90,7 @@ public class PostDTO {
     @JsonView(MetadataOnlyView.class)
     public Integer getNumComments() { return numComments; }
 
-    public void setId(Long id) { this.id = id; }
+    public void setPostId(Long postId) { this.postId = postId; }
     public void setAuthor(String author) { this.author = author; }
     public void setTitle(String title) { this.title = title; }
     public void setDescription(String description) { this.description = description; }
@@ -104,7 +106,7 @@ public class PostDTO {
     @Override
     public String toString() {
         return "PostDTO{" +
-                "id=" + id +
+                "postId=" + postId +
                 ", author='" + author + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +

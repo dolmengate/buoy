@@ -1,0 +1,20 @@
+.comment {
+
+}
+
+.reply {
+  margin-left: 1em;
+}
+
+.active-comment {
+  background-color: lightblue;
+}
+
+a {
+  text-decoration: underline;
+  color: darkblue;
+}
+
+a:hover {
+  cursor: pointer;
+}

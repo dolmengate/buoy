@@ -36,10 +36,6 @@ public class Application {
 
             p.getComments().add(c2);
             posts.save(p);
-
-            System.out.println("replies: " + comments.getAllByReplyTo(c1.getCommentId()).size());
-
-            System.out.println("post: " + posts.findOne(p.getPostId()));
         };
     }
 }

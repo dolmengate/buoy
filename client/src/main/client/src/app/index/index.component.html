@@ -1,7 +1,7 @@
 <div>
   <div *ngFor="let post of posts">
     <span>Author: {{post.author}}</span>
-    <span>Title: <a routerLink="/posts/{{post.id}}" routerLinkActive="active">{{post.title}}</a></span>
+    <span>Title: <a routerLink="/posts/{{post.postId}}" routerLinkActive="active">{{post.title}}</a></span>
     <span>Description: {{post.description}}</span>
     <span>Version: {{post.version}}</span>
     <span>Comments: {{post.numComments}}</span>

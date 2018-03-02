@@ -1,0 +1,20 @@
+<div>Add a comment </div>
+<input type="text" id="comment-author"/>
+
+<div *ngIf="activeComment">
+  <div>Reply to {{activeComment.author}} @{{activeComment.commentId}}</div>
+</div>
+
+<textarea rows="5" cols="40" id="comment-area"></textarea>
+<button>Post</button>
+
+<div *ngFor="let comment of comments">
+  <div *ngIf="comment.replyTo === null" [class.active-comment]="comment === activeComment" >  <!-- don't display replies to other comments as top level comments-->
+    <div>{{comment.author}}</div><div>{{comment.created}}</div>
+    <div>{{comment.text}}</div> <a (click)="appendReplyId(comment.commentId)">reply</a>
+    <div *ngFor="let reply of comment.replies" class="reply">
+      <div>{{reply.author}}</div><div>{{reply.created}}</div>
+      <div>{{reply.text}}</div>
+    </div>
+  </div>
+</div>

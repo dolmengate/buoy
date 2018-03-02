@@ -46,7 +46,6 @@ export class EditorComponent implements OnInit, OnDestroy {
       this.editorText = res.text;
       this.editorId = res.editorId; // server prefers editorId for editor lookup
     }
-    console.log('received', res);
   };
 
   sendMessage() {
@@ -54,7 +53,6 @@ export class EditorComponent implements OnInit, OnDestroy {
       '/app/message',
       JSON.stringify({ freshConnect: this.freshConnect, text: this.editorText, postId: this.postId, editorId: this.editorId } )
     );
-    console.log('sending',{ freshConnect: this.freshConnect, text: this.editorText, postId: this.postId, editorId: this.editorId } );
   }
 
   handleTextareaKeyDown(event: KeyboardEvent) {

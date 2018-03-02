@@ -9,7 +9,7 @@
     <div>
       <div *ngIf="post.type === 'TEXT'">{{post.contentText}}</div>
       <div *ngIf="post.type === 'EDITOR'">
-        <app-editor [postId]="post.id"></app-editor>
+        <app-editor [postId]="post.postId"></app-editor>
       </div>
       <div>
         Save and increment version:
@@ -18,12 +18,7 @@
         </button>
       </div>
       <div>
-        <div *ngFor="let comment of post.comments">
-          <div>{{comment.author}}</div>
-          <div>{{comment.created}}</div>
-          <div>{{comment.text}}</div>
-          <div *ngFor="let reply of comment.replies">{{reply}}</div>
-        </div>
-    </div>
+        <app-comments [comments]="post.comments"></app-comments>
+      </div>
     </div>
 </div>

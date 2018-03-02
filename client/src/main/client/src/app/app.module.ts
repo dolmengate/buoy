@@ -12,6 +12,8 @@ import { PostPageComponent } from "./post-page/post-page.component";
 import { StompConfig, StompService } from "@stomp/ng2-stompjs";
 import * as SockJS from "sockjs-client";
 import {NewPostComponent} from "./new-post/new-post.component";
+import {CommentsComponent} from "./comments/comments.component";
+import {ChatComponent} from "./chat/chat.component";
 
 const stompConfig: StompConfig = {
   url: () => new SockJS('/buoy'),
@@ -25,7 +27,7 @@ const stompConfig: StompConfig = {
 // Route order matters
 const appRoutes: Routes = [
   { path: '', component: IndexComponent },
-  { path: 'posts/:id', component: PostPageComponent },
+  { path: 'posts/:postId', component: PostPageComponent },
   { path: 'newpost', component: NewPostComponent }
 ];
 
@@ -36,7 +38,9 @@ const appRoutes: Routes = [
     EditorComponent,
     NavigationComponent,
     PostPageComponent,
-    NewPostComponent
+    NewPostComponent,
+    CommentsComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
