@@ -13,6 +13,8 @@ export class CommentsComponent implements OnInit {
 
   public activeComment: Comment;
 
+  // get post
+
   constructor() { }
 
   ngOnInit() { }
@@ -20,5 +22,8 @@ export class CommentsComponent implements OnInit {
   appendReplyId(commentId: number) {
     document.getElementById('comment-area').innerText += "@" + commentId + '\n';
     this.activeComment = this.comments.find(c => c.commentId === commentId);
+  }
+
+  addComment() {
   }
 }

@@ -14,6 +14,7 @@ import * as SockJS from "sockjs-client";
 import {NewPostComponent} from "./new-post/new-post.component";
 import {CommentsComponent} from "./comments/comments.component";
 import {ChatComponent} from "./chat/chat.component";
+import {PostService} from "./post.service";
 
 const stompConfig: StompConfig = {
   url: () => new SockJS('/buoy'),
@@ -55,7 +56,8 @@ const appRoutes: Routes = [
     {
       provide: StompConfig,
       useValue: stompConfig
-    }
+    },
+    PostService
   ],
   bootstrap: [AppComponent]
 })

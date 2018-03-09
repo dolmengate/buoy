@@ -29,11 +29,12 @@ export class Post {
    */
   public static getInstance(source: any): Post {
     const p = Object.assign(new Post(), source);
-
-    // map source data comments JSON into Comment objects
+    if (source.comments) {
+      // map source data comments JSON into Comment objects
       p.comments = source.comments.map(c => {
         return Comment.getInstance(c, source.comments);
       });
+    }
     return p;
   }
 }

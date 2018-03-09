@@ -27,12 +27,13 @@ export class Comment {
     const c = Object.assign(new Comment(), source);
 
     // find replies for Comment out of all post comments
-    allComments.forEach((comment, i) => {
-      if (comment.replyTo !== null)
-        if (comment.replyTo.commentId === c.commentId)
-          // allComments passed by value: original is not changed
-          c.replies.push(allComments.splice(i, 1)[0]);
-    });
+    if (allComments) {
+      allComments.forEach((comment, i) => {
+        if (comment.replyTo !== null)
+          if (comment.replyTo.commentId === c.commentId) // allComments passed by value: original is not changed
+            c.replies.push(allComments.splice(i, 1)[0]);
+      });
+    }
     return c;
   }
 }

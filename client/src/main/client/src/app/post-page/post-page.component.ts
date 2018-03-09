@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import axios from "axios";
 import {Post} from "../model/Post";
+import {PostService} from "../post.service";
 
 @Component({
   selector: 'app-post-page',
@@ -12,16 +13,13 @@ export class PostPageComponent implements OnInit {
 
   public post: Post;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private postService: PostService) { }
 
   ngOnInit() {
     const postId = this.route.snapshot.paramMap.get("postId");
-    axios.get(`/api/posts/${postId}`, { headers: { "Content-Type": "application/json"} })
-      .then(res => {
-        this.post = Post.getInstance(res.data);
-        console.log("this post: ", this.post);
-      })
-      .catch(err => console.log(err))
+    this.postService.getPost(Number(postId))
+      .then((post) => this.post = post)
+      .catch(err => console.log(err));
   }
 
   saveAndIncrement() {

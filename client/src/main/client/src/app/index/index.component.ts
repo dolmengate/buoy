@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import axios from "axios";
 import { Post } from "../model/Post";
+import {PostService} from "../post.service";
 
 @Component({
   selector: 'app-index',
@@ -11,11 +11,11 @@ export class IndexComponent implements OnInit {
 
   public posts: Post[];
 
-  constructor() { }
+  constructor(private postService: PostService) { }
 
   ngOnInit() {
-    axios.get('/api/posts')
-      .then(res => this.posts = res.data)
-      .catch(err => console.log(err));
+    this.postService.getPosts()
+      .then((posts) => { this.posts = posts; })
+      .catch((err) => console.log(err));
   }
 }

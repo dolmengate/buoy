@@ -6,7 +6,7 @@
 </div>
 
 <textarea rows="5" cols="40" id="comment-area"></textarea>
-<button>Post</button>
+<button (onclick)="addComment()">Post</button>
 
 <div *ngFor="let comment of comments">
   <div *ngIf="comment.replyTo === null" [class.active-comment]="comment === activeComment" >  <!-- don't display replies to other comments as top level comments-->
