@@ -1,9 +1,10 @@
 package info.sroman.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
 import info.sroman.entities.*;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public class PostDTO {
@@ -12,7 +13,6 @@ public class PostDTO {
 
     // Jackson serialization view marker interfaces
     public interface MetadataOnlyView {}
-    public interface FullView extends MetadataOnlyView {}
 
     public PostDTO() { }
     public PostDTO(Post p) {
@@ -36,8 +36,8 @@ public class PostDTO {
     private String author;
     private String title;
     private String description;
-    private LocalDateTime lastModified;
-    private LocalDateTime created;
+    private Date lastModified;
+    private Date created;
 
     // Content attributes
     private Type type;
@@ -67,10 +67,10 @@ public class PostDTO {
     public String getDescription() { return description; }
 
     @JsonView(MetadataOnlyView.class)
-    public LocalDateTime getLastModified() { return lastModified; }
+    public Date getLastModified() { return lastModified; }
 
     @JsonView(MetadataOnlyView.class)
-    public LocalDateTime getCreated() { return created; }
+    public Date getCreated() { return created; }
 
     @JsonView(MetadataOnlyView.class)
     public Type getType() { return type; }
@@ -78,13 +78,8 @@ public class PostDTO {
     @JsonView(MetadataOnlyView.class)
     public Float getVersion() { return version; }
 
-    @JsonView(FullView.class)
     public String getContentText() { return contentText; }
-
-    @JsonView(FullView.class)
     public String getEditorText() { return editorText; }
-
-    @JsonView(FullView.class)
     public List<Comment> getComments() { return comments; }
 
     @JsonView(MetadataOnlyView.class)
@@ -94,8 +89,8 @@ public class PostDTO {
     public void setAuthor(String author) { this.author = author; }
     public void setTitle(String title) { this.title = title; }
     public void setDescription(String description) { this.description = description; }
-    public void setLastModified(LocalDateTime lastModified) { this.lastModified = lastModified; }
-    public void setCreated(LocalDateTime created) { this.created = created; }
+    public void setLastModified(Date lastModified) { this.lastModified = lastModified; }
+    public void setCreated(Date created) { this.created = created; }
     public void setType(Type type) { this.type = type; }
     public void setVersion(Float version) { this.version = version; }
     public void setContentText(String contentText) { this.contentText = contentText; }

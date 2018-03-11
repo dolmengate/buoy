@@ -4,7 +4,6 @@ import info.sroman.entities.Type;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 public class PostForm {
 
@@ -15,9 +14,6 @@ public class PostForm {
     private String title;
 
     private String description;
-
-    private LocalDateTime lastModified;
-    private LocalDateTime created;
 
     // Content attributes
     @NotNull
@@ -34,10 +30,6 @@ public class PostForm {
     public void setTitle(String title) { this.title = title; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-    public LocalDateTime getLastModified() { return lastModified; }
-    public void setLastModified(LocalDateTime lastModified) { this.lastModified = lastModified; }
-    public LocalDateTime getCreated() { return created; }
-    public void setCreated(LocalDateTime created) { this.created = created; }
     public Type getType() { return type; }
     public void setType(Type type) { this.type = type; }
     public Float getVersion() { return version; }
@@ -51,8 +43,6 @@ public class PostForm {
                 "author='" + author + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", lastModified=" + lastModified +
-                ", created=" + created +
                 ", type=" + type +
                 ", version=" + version +
                 ", contentText='" + contentText + '\'' +

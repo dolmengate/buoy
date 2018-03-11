@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Post} from "../model/Post";
-import axios from "axios";
+import {PostService} from "../post.service";
 
 @Component({
   selector: 'app-new-post',
@@ -12,15 +12,14 @@ export class NewPostComponent implements OnInit {
   TYPES: string[] = ['EDITOR', 'TEXT'];
   post: Post;
 
-  constructor() { }
+  constructor(private postService: PostService) { }
 
   ngOnInit() {
     this.post = new Post();
   }
 
   onSubmit() {
-    axios.post('/api/posts/new', this.post)
-      .then(res => console.log(res))
+    this.postService.newPost(this.post)
       .catch(err => console.log(err));
   }
 }

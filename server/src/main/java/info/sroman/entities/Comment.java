@@ -1,24 +1,30 @@
 package info.sroman.entities;
 
+import info.sroman.model.CommentDTO;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name="post_comments")
 public class Comment {
 
     private Comment() { }
+    public Comment(CommentDTO commentDTO) {
+        this.text = commentDTO.getText();
+        this.author = commentDTO.getAuthor();
+        // replyto
+    }
     public Comment(String author, String text) {
         this.text = text;
         this.author = author;
-        this.created = LocalDateTime.now();
+        this.created = new Date();
     }
     public Comment(String author, String text, Comment replyTo) {
         this.text = text;
         this.author = author;
-        this.created = LocalDateTime.now();
+        this.created = new Date();
         this.replyTo = replyTo;
     }
 
@@ -37,7 +43,7 @@ public class Comment {
     private Comment replyTo;
 
     @CreatedDate
-    private LocalDateTime created;
+    private Date created;
 
     public Long getCommentId() { return commentId; }
     public void setCommentId(Long commentId) { this.commentId = commentId; }
@@ -47,8 +53,8 @@ public class Comment {
     public void setAuthor(String author) { this.author = author; }
     public Post getPost() { return post; }
     public void setPost(Post post) { this.post = post; }
-    public LocalDateTime getCreated() { return created; }
-    public void setCreated(LocalDateTime created) { this.created = created; }
+    public Date getCreated() { return created; }
+    public void setCreated(Date created) { this.created = created; }
     public Comment getReplyTo() { return replyTo; }
     public void setReplyTo(Comment replyTo) { this.replyTo = replyTo; }
 

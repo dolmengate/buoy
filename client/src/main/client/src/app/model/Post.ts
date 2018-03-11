@@ -6,6 +6,8 @@ export class Post {
     this.postId = postId;
     this.author = author;
     this.title = title;
+    this.created = new Date();
+    this.lastModified = new Date();
   }
 
   public postId: number;
@@ -29,6 +31,8 @@ export class Post {
    */
   public static getInstance(source: any): Post {
     const p = Object.assign(new Post(), source);
+    p.created = new Date(source.created);
+    p.lastModified = new Date(source.lastModified);
     if (source.comments) {
       // map source data comments JSON into Comment objects
       p.comments = source.comments.map(c => {

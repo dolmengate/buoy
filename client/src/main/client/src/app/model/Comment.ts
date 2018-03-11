@@ -5,6 +5,7 @@ export class Comment {
     this.author = author;
     this.text = text;
     this.replies = [];
+    this.created = new Date();
   }
 
   public commentId: number;
@@ -13,7 +14,6 @@ export class Comment {
   public created: Date;
   public replyTo: Comment;
   public replies: Comment[];
-
 
   /**
    * Builder function to unpack JSON object and return Comment instance.
@@ -25,13 +25,13 @@ export class Comment {
    */
   public static getInstance(source: any, allComments?: Comment[]): Comment {
     const c = Object.assign(new Comment(), source);
-
+    c.created = new Date(source.created);
     // find replies for Comment out of all post comments
     if (allComments) {
       allComments.forEach((comment, i) => {
         if (comment.replyTo !== null)
           if (comment.replyTo.commentId === c.commentId) // allComments passed by value: original is not changed
-            c.replies.push(allComments.splice(i, 1)[0]);
+            c.replies.push(Comment.getInstance(allComments.splice(i, 1)[0]));
       });
     }
     return c;

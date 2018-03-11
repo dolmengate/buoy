@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import axios from "axios";
 import {Post} from "../model/Post";
 import {PostService} from "../post.service";
 
@@ -23,11 +22,7 @@ export class PostPageComponent implements OnInit {
   }
 
   saveAndIncrement() {
-    axios.post(`/api/posts/save/${this.post.postId}`, { headers: { "Content-Type": "application/json"} })
-      .then(res => {
-        this.post = this.formatPostDates(res.data);
-      })
-      .catch(err => console.log(err));
+    this.postService.savePost(this.post);
   }
 
   private formatPostDates(postData: any): Post {

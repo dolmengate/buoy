@@ -1,9 +1,11 @@
 package info.sroman.entities;
 
+import info.sroman.model.PostForm;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -29,17 +31,23 @@ public class Post {
     @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
     private List<Comment> comments;
 
-    private LocalDateTime lastModified;
-    private LocalDateTime created;
+    private Date lastModified;
+    private Date created;
 
     public Post() { setCreated(); }
+
+    public Post(PostForm form) {
+        this.author = form.getAuthor();
+        this.title = form.getTitle();
+        this.description = form.getDescription();
+    }
 
     public Post(String title, String author, String description, Content content, Comment... comments) {
         this.title = title;
         this.author = author;
         this.description = description;
         this.content = content;
-        this.created = LocalDateTime.now();
+        this.created = new Date();
         this.lastModified = this.created;
         this.comments = new ArrayList<>(Arrays.asList(comments));
     }
@@ -49,7 +57,7 @@ public class Post {
         this.author = author;
         this.description = description;
         this.content = content;
-        this.created = LocalDateTime.now();
+        this.created = new Date();
         this.lastModified = this.created;
     }
 
@@ -57,7 +65,7 @@ public class Post {
         this.title = title;
         this.author = author;
         this.description = description;
-        this.created = LocalDateTime.now();
+        this.created = new Date();
         this.lastModified = this.created;
     }
 
@@ -65,11 +73,11 @@ public class Post {
     public void setPostId(Long postId) { this.postId = postId; this.setLastModified(); }
     public String getAuthor() { return author; }
     public void setAuthor(String author) { this.author = author; this.setLastModified(); }
-    public LocalDateTime getLastModified() { return lastModified; }
-    public void setLastModified(LocalDateTime lastModified) { this.lastModified = lastModified; }
-    public void setLastModified() { this.lastModified = LocalDateTime.now(); }
-    public LocalDateTime getCreated() { return created; }
-    public void setCreated() { this.created = LocalDateTime.now(); this.setLastModified(); }
+    public Date getLastModified() { return lastModified; }
+    public void setLastModified(Date lastModified) { this.lastModified = lastModified; }
+    public void setLastModified() { this.lastModified = new Date(); }
+    public Date getCreated() { return created; }
+    public void setCreated() { this.created = new Date(); this.setLastModified(); }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; this.setLastModified(); }
     public Content getContent() { return content; }

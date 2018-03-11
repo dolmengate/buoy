@@ -4,7 +4,7 @@
       <div>by {{post.author}}</div>
       <div><small>{{post.description}}</small></div>
       <span>Version: {{post.version}}</span>
-      <span>{{post.created}}</span>
+      <span>{{post.created.toLocaleDateString()}}</span>
     </div>
     <div>
       <div *ngIf="post.type === 'TEXT'">{{post.contentText}}</div>

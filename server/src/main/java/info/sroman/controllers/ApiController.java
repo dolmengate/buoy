@@ -2,6 +2,7 @@ package info.sroman.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import info.sroman.entities.*;
+import info.sroman.model.CommentDTO;
 import info.sroman.model.PostDTO;
 import info.sroman.model.PostForm;
 import info.sroman.repositories.*;
@@ -39,7 +40,6 @@ public class ApiController {
     }
 
     @GetMapping(path="/posts/{postId}")
-//    @JsonView(PostDTO.MetadataOnlyView.class)
     public PostDTO getPostById(@PathVariable String postId) {
         return new PostDTO(posts.findOne(Long.parseLong(postId)));
     }
@@ -68,6 +68,16 @@ public class ApiController {
         // update Editor text
         post.getContent().getEditor().setText(pDTO.getEditorText());
 
+        PostDTO pdto = new PostDTO(posts.save(post));
+        System.out.println(pdto);
+        return pdto;
+    }
+
+    @PostMapping(path="/posts/addcomment/{postId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public PostDTO addComment(@PathVariable String postId, @RequestBody CommentDTO cDTO) {
+        Post post = posts.findOne(Long.parseLong(postId));
+        post.getComments().add(new Comment(cDTO));
         return new PostDTO(posts.save(post));
     }
 }

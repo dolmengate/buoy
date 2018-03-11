@@ -26,7 +26,20 @@ export class PostService {
     });
   }
 
-  savePost(postId: number, post: Post): void {
-    // todo: implement function
+  savePost(post: Post): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const savePostUrl = `${this.postsUrl}/save/${post.postId}`;
+      axios.post(savePostUrl, post)
+        .then(() => resolve())
+        .catch((err) => reject(err));
+    })
+  }
+
+  newPost(post: Post): Promise<void> {
+    return new Promise((resolve, reject) => {
+      axios.post(`${this.postsUrl}/new`, post)
+        .then(() => resolve())
+        .catch((err) => reject(err));
+    })
   }
 }
