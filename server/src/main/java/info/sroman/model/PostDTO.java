@@ -29,6 +29,8 @@ public class PostDTO {
         this.comments = p.getComments();
 
         this.editorText = p.getContent().getEditor().getText();
+        if (p.getComments() != null)
+            this.numComments = p.getComments().size();
     }
 
     // Post attributes

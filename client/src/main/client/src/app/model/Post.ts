@@ -19,6 +19,7 @@ export class Post {
   public type: string;
   public version: number;
   public comments: Comment[];
+  public numComments: number;
 
   // fixme: Attachment vars - temporary
   contentText: string = '';

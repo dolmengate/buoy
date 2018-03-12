@@ -36,10 +36,10 @@ export class PostService {
     })
   }
 
-  newPost(post: Post): Promise<void> {
+  newPost(post: Post): Promise<Post> {
     return new Promise((resolve, reject) => {
       axios.post(`${this.postsUrl}/new`, post)
-        .then(() => resolve())
+        .then((res) => resolve(Post.getInstance(res.data)))
         .catch((err) => reject(err));
     })
   }

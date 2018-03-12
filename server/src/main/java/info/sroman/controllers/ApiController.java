@@ -46,7 +46,7 @@ public class ApiController {
 
     @PostMapping(path="/posts/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public void newPost(@RequestBody @Validated PostForm form) {
+    public PostDTO newPost(@RequestBody @Validated PostForm form) {
 
         Post p = new Post(form.getTitle(), form.getAuthor(), form.getDescription());
         Content c = new Content(form.getType(), form.getContentText(), 1.0F);
@@ -55,7 +55,7 @@ public class ApiController {
             c.setEditor(e);
         }
         p.setContent(c);
-        posts.save(p);
+        return new PostDTO(posts.save(p));
     }
 
     @PostMapping(path="/posts/save/{postId}")
