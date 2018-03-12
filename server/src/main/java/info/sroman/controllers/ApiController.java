@@ -2,7 +2,7 @@ package info.sroman.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import info.sroman.entities.*;
-import info.sroman.model.CommentDTO;
+import info.sroman.model.CommentForm;
 import info.sroman.model.PostDTO;
 import info.sroman.model.PostForm;
 import info.sroman.repositories.*;
@@ -75,9 +75,15 @@ public class ApiController {
 
     @PostMapping(path="/posts/addcomment/{postId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public PostDTO addComment(@PathVariable String postId, @RequestBody CommentDTO cDTO) {
+    public PostDTO addComment(@PathVariable String postId, @RequestBody CommentForm cForm) {
         Post post = posts.findOne(Long.parseLong(postId));
-        post.getComments().add(new Comment(cDTO));
+
+        if (cForm.getReplyToId() == null) { // post is not a reply: it is a top-level comment
+            post.getComments().add(new Comment(cForm));
+        } else {
+            Comment parentComment = comments.findOne(cForm.getReplyToId());
+            post.getComments().add(new Comment(cForm, parentComment));
+        }
         return new PostDTO(posts.save(post));
     }
 }

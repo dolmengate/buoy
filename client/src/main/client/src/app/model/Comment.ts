@@ -1,11 +1,13 @@
 export class Comment {
 
-  constructor(id?: number, author?: string, text?: string) {
-    this.commentId = id;
+  constructor(author?: string, text?: string) {
+    this.commentId = 0;
     this.author = author;
     this.text = text;
-    this.replies = [];
     this.created = new Date();
+    this.replies = [];
+    this.replyTo = null;
+    this.replyToId = null;
   }
 
   public commentId: number;
@@ -13,6 +15,11 @@ export class Comment {
   public text: string;
   public created: Date;
   public replyTo: Comment;
+
+  // for the purposes of sending comment replies to server as JSON
+  // leave replyTo null and use replyToId with parent Comment's id
+  // circular JSON objects cannot be serialized
+  public replyToId: number;
   public replies: Comment[];
 
   /**
@@ -26,12 +33,13 @@ export class Comment {
   public static getInstance(source: any, allComments?: Comment[]): Comment {
     const c = Object.assign(new Comment(), source);
     c.created = new Date(source.created);
+
     // find replies for Comment out of all post comments
     if (allComments) {
       allComments.forEach((comment, i) => {
         if (comment.replyTo !== null)
-          if (comment.replyTo.commentId === c.commentId) // allComments passed by value: original is not changed
-            c.replies.push(Comment.getInstance(allComments.splice(i, 1)[0]));
+          if (comment.replyTo.commentId === c.commentId)
+            c.replies.push(Comment.getInstance(allComments[i]));
       });
     }
     return c;

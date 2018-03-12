@@ -8,6 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import java.util.Date;
+
 @SpringBootApplication
 @EnableJpaRepositories("info.sroman.repositories")  // enables creation and auto-implementation of -Repository<E,ID> interfaces
 public class Application {
@@ -33,8 +35,10 @@ public class Application {
             c1 = comments.findOne(c1.getCommentId());
 
             Comment c2 = new Comment("me", "hi dot com", c1);
-
+            Comment c3 = new Comment("me", "another reply", c1);
+            c3.setCreated(new Date(1320883654273L));
             p.getComments().add(c2);
+            p.getComments().add(c3);
             posts.save(p);
         };
     }

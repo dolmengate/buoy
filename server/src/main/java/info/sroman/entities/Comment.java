@@ -1,6 +1,6 @@
 package info.sroman.entities;
 
-import info.sroman.model.CommentDTO;
+import info.sroman.model.CommentForm;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -11,16 +11,25 @@ import java.util.Date;
 public class Comment {
 
     private Comment() { }
-    public Comment(CommentDTO commentDTO) {
-        this.text = commentDTO.getText();
-        this.author = commentDTO.getAuthor();
-        // replyto
+    public Comment(CommentForm commentForm) {
+        this.text = commentForm.getText();
+        this.author = commentForm.getAuthor();
+        this.created = new Date();
     }
+
+    public Comment(CommentForm commentForm, Comment replyTo) {
+        this.text = commentForm.getText();
+        this.author = commentForm.getAuthor();
+        this.created = new Date();
+        this.replyTo =  replyTo;
+    }
+
     public Comment(String author, String text) {
         this.text = text;
         this.author = author;
         this.created = new Date();
     }
+
     public Comment(String author, String text, Comment replyTo) {
         this.text = text;
         this.author = author;

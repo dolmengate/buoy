@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Comment} from '../model/Comment';
+import {PostService} from "../post.service";
 
 @Component({
   selector: 'app-comments',
@@ -8,22 +9,40 @@ import {Comment} from '../model/Comment';
 })
 export class CommentsComponent implements OnInit {
 
+  // todo: CommentService
+
+  @Input()
+  public postId: number;
+
   @Input()
   public comments: Comment[];
 
-  public activeComment: Comment;
+  public parentComment: Comment = null;
+  public composedComment: Comment = new Comment();
 
-  // get post
+  constructor(private postService: PostService) { console.log('comments', this.comments);}
 
-  constructor() { }
+  ngOnInit() { console.log('comments', this.comments); }
 
-  ngOnInit() { }
+  setParentComment(commentId: number) {
+    this.parentComment = this.comments.find(c => c.commentId === commentId);
+    this.composedComment.replyToId = this.parentComment.commentId;
+  }
 
-  appendReplyId(commentId: number) {
-    document.getElementById('comment-area').innerText += "@" + commentId + '\n';
-    this.activeComment = this.comments.find(c => c.commentId === commentId);
+  cancelReplyTo() {
+    this.parentComment = null;
   }
 
   addComment() {
+    if (this.parentComment)
+        this.parentComment.replies.push(this.composedComment);
+    this.comments.push(this.composedComment);
+
+    // update post comments server-side
+    this.postService.savePostComment(this.postId, this.composedComment);
+
+    // reset
+    this.composedComment = new Comment();
+    this.parentComment = null;
   }
 }

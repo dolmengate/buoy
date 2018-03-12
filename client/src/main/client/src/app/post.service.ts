@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Post} from "./model/Post";
+import {Comment} from "./model/Comment";
 import axios from "axios";
 
 @Injectable()
@@ -40,6 +41,14 @@ export class PostService {
       axios.post(`${this.postsUrl}/new`, post)
         .then(() => resolve())
         .catch((err) => reject(err));
+    })
+  }
+
+  savePostComment(postId: number, comment: Comment): Promise<void> {
+    return new Promise((resolve, reject) => {
+      axios.post(`${this.postsUrl}/addcomment/${postId}`, comment)
+        .then(() => resolve())
+        .catch(err => reject(err));
     })
   }
 }
