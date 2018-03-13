@@ -20,10 +20,10 @@ export class Post {
   public version: number;
   public comments: Comment[];
   public numComments: number;
+  public editorId: number;
 
   // fixme: Attachment vars - temporary
-  contentText: string = '';
-  editorText: string;
+  public contentText: string = '';
 
   /**
    * Builder function to unpack JSON object and return a Post instance.

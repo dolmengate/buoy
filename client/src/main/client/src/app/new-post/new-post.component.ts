@@ -20,7 +20,6 @@ export class NewPostComponent implements OnInit {
   onSubmit() {
     this.postService.newPost(this.post)
       .then((post) => {
-        console.log('new post component post', post);
         this.router.navigateByUrl(`/posts/${post.postId}`);
       })
       .catch(err => console.log(err));

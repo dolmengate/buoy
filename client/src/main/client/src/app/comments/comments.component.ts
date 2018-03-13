@@ -20,7 +20,7 @@ export class CommentsComponent implements OnInit {
   public parentComment: Comment = null;
   public composedComment: Comment = new Comment();
 
-  constructor(private postService: PostService) { console.log('comments', this.comments);}
+  constructor(private postService: PostService) { }
 
   ngOnInit() { console.log('comments', this.comments); }
 

@@ -68,9 +68,7 @@ public class ApiController {
         // update Editor text
         post.getContent().getEditor().setText(pDTO.getEditorText());
 
-        PostDTO pdto = new PostDTO(posts.save(post));
-        System.out.println(pdto);
-        return pdto;
+        return new PostDTO(posts.save(post));
     }
 
     @PostMapping(path="/posts/addcomment/{postId}")

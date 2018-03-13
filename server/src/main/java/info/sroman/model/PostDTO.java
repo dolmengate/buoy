@@ -1,6 +1,5 @@
 package info.sroman.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
 import info.sroman.entities.*;
 
@@ -8,8 +7,6 @@ import java.util.Date;
 import java.util.List;
 
 public class PostDTO {
-
-    //fixme: just send the editor id from the get-go: add editorId attribute
 
     // Jackson serialization view marker interfaces
     public interface MetadataOnlyView {}
@@ -28,6 +25,7 @@ public class PostDTO {
 
         this.comments = p.getComments();
 
+        this.editorId = p.getContent().getEditor().getAttachmentId();
         this.editorText = p.getContent().getEditor().getText();
         if (p.getComments() != null)
             this.numComments = p.getComments().size();
@@ -47,7 +45,9 @@ public class PostDTO {
     private String contentText;
 
     // Editor attributes
+    private Long editorId;
     private String editorText;
+    private boolean cachedVersion;
 
     // Comments
     private Integer numComments;
@@ -81,7 +81,9 @@ public class PostDTO {
     public Float getVersion() { return version; }
 
     public String getContentText() { return contentText; }
+    public Long getEditorId() { return editorId; }
     public String getEditorText() { return editorText; }
+    public boolean isCachedVersion() { return cachedVersion; }
     public List<Comment> getComments() { return comments; }
 
     @JsonView(MetadataOnlyView.class)
@@ -96,7 +98,9 @@ public class PostDTO {
     public void setType(Type type) { this.type = type; }
     public void setVersion(Float version) { this.version = version; }
     public void setContentText(String contentText) { this.contentText = contentText; }
+    public void setEditorId(Long editorId) { this.editorId = editorId; }
     public void setEditorText(String editorText) { this.editorText = editorText; }
+    public void setCachedVersion(boolean cachedVersion) { this.cachedVersion = cachedVersion; }
     public void setComments(List<Comment> comments) { this.comments = comments; this.setNumComments(this.comments.size()); }
     private void setNumComments(Integer numComments) { this.numComments = numComments; }
 

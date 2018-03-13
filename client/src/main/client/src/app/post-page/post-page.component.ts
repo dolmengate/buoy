@@ -24,16 +24,4 @@ export class PostPageComponent implements OnInit {
   saveAndIncrement() {
     this.postService.savePost(this.post);
   }
-
-  private formatPostDates(postData: any): Post {
-    postData.created = new Date(postData.created.nano);
-    postData.lastModified = new Date(postData.lastModified.nano);
-
-    if (postData.comments !== undefined) {
-      postData.comments.forEach(comment => {
-        comment.created = new Date(comment.created.nano)
-      });
-    }
-    return postData;
-  }
 }

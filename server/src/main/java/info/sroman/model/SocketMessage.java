@@ -3,6 +3,7 @@ package info.sroman.model;
 import info.sroman.entities.Editor;
 
 public class SocketMessage {
+
     private String text;
     private boolean freshConnect;
     private Long postId;
@@ -13,10 +14,11 @@ public class SocketMessage {
         this.text = text;
         this.freshConnect = false;
     }
+
     public SocketMessage(Editor editor) {
         this.text = editor.getText();
         this.editorId = editor.getAttachmentId();
-        this.postId = editor.getContent().getPost().getPostId();    // fixme: db query in SocketMessage constructor?
+        this.postId = editor.getContent().getPost().getPostId();
         this.freshConnect = false;
     }
 
