@@ -1,0 +1,13 @@
+.form-group {
+  margin: .5em;
+  padding: .5em;
+}
+
+a {
+  text-decoration: underline;
+  color: darkblue;
+}
+
+a:hover {
+  cursor: pointer;
+}

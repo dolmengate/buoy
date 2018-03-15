@@ -8,13 +8,13 @@ import { AppComponent } from './app.component';
 import { EditorComponent } from './editor/editor.component';
 import { IndexComponent } from "./index/index.component";
 import { PostPageComponent } from "./post-page/post-page.component";
+import { NewPostComponent } from "./new-post/new-post.component";
+import { CommentsComponent } from "./comments/comments.component";
+import { ChatComponent } from "./chat/chat.component";
+import { PostService } from "./post.service";
 
 import { StompConfig, StompService } from "@stomp/ng2-stompjs";
 import * as SockJS from "sockjs-client";
-import {NewPostComponent} from "./new-post/new-post.component";
-import {CommentsComponent} from "./comments/comments.component";
-import {ChatComponent} from "./chat/chat.component";
-import {PostService} from "./post.service";
 
 const stompConfig: StompConfig = {
   url: () => new SockJS('/buoy'),

@@ -19,17 +19,22 @@ export class CommentsComponent implements OnInit {
 
   public parentComment: Comment = null;
   public composedComment: Comment = new Comment();
+  public commentForm: boolean = false;
 
   constructor(private postService: PostService) { }
 
-  ngOnInit() { console.log('comments', this.comments); }
+  ngOnInit() { }
+
+  toggleCommentForm() {
+    this.commentForm = !this.commentForm;
+  }
 
   setParentComment(commentId: number) {
     this.parentComment = this.comments.find(c => c.commentId === commentId);
     this.composedComment.replyToId = this.parentComment.commentId;
   }
 
-  cancelReplyTo() {
+  clearParentComment() {
     this.parentComment = null;
   }
 
@@ -38,7 +43,6 @@ export class CommentsComponent implements OnInit {
         this.parentComment.replies.push(this.composedComment);
     this.comments.push(this.composedComment);
 
-    // update post comments server-side
     this.postService.savePostComment(this.postId, this.composedComment);
 
     // reset

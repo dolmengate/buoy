@@ -1,9 +1,16 @@
 <div>
-  <div *ngFor="let post of posts">
-    <span>Author: {{post.author}}</span>
-    <span>Title: <a routerLink="/posts/{{post.postId}}" routerLinkActive="active">{{post.title}}</a></span>
-    <span>Description: {{post.description}}</span>
-    <span>Version: {{post.version}}</span>
-    <span>Comments: {{post.numComments}}</span>
+  <div *ngFor="let post of posts" class="post">
+    <div class="post-title">
+      <a routerLink="/posts/{{post.postId}}" routerLinkActive="active">{{post.title}}</a>
+    </div>
+    <div>
+      <span>by {{post.author}} at {{post.created.toLocaleDateString()}}</span>
+    </div>
+    <div>
+        <span>version {{post.version}}</span>, <span>{{post.numComments}} comments</span>
+    </div>
+    <div class="post-description">
+      <span>{{post.description}}</span>
+    </div>
   </div>
 </div>

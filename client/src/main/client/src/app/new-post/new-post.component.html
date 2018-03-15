@@ -1,32 +1,37 @@
 <div>
   <form (ngSubmit)="onSubmit()" #newPostForm="ngForm">
-    <label for="title">Title</label>
-    <input id="title" type="text" [(ngModel)]="post.title" name="title" required/>
-        <br />
-    <select
-      id="type"
-      required
-      [(ngModel)]="post.type"
-      name="type"
-   >
-      <option *ngFor="let type of TYPES" [value]="type">
-        {{type}}
-      </option>
-    </select>
-        <br />
-    <label for="author">Author</label>
-    <input id="author" type="text" [(ngModel)]="post.author" name="author" required/>
-        <br />
-    <label for="description">Description</label>
-    <textarea id="description" [(ngModel)]="post.description" name="description"></textarea>
-        <br />
+
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input id="title" type="text" [(ngModel)]="post.title" name="title" required/>
+    </div>
+
+    <div class="form-group">
+      <label for="type">Type</label>
+      <select id="type" required [(ngModel)]="post.type" name="type" >
+        <option *ngFor="let type of TYPES" [value]="type"> {{type}} </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="author">Author</label>
+      <input id="author" type="text" [(ngModel)]="post.author" name="author" required/>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" [(ngModel)]="post.description" name="description"></textarea>
+    </div>
+
     <div *ngIf="post">
-        <div *ngIf="post.type === 'TEXT'">
-          <label for="contentText">Post content:</label>
+        <div *ngIf="post.type === 'TEXT'" class="form-group">
+          <label for="contentText">Post content:</label><br />
           <textarea id="contentText" [(ngModel)]="post.contentText" name="contentText" required></textarea>
         </div>
     </div>
-        <br />
-    <button type="submit" [disabled]="!newPostForm.form.valid">Create Post</button>
+
+    <div class="form-group">
+      <button type="submit" [disabled]="!newPostForm.form.valid">Create Post</button>
+    </div>
   </form>
 </div>

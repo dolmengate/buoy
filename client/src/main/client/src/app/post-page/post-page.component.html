@@ -1,12 +1,11 @@
 <div *ngIf="post">
-    <div>
+    <div class="post-header">
       <div><h4>{{post.title}}</h4></div>
-      <div>by {{post.author}}</div>
-      <div><small>{{post.description}}</small></div>
+      <div><span>by {{post.author}}</span> at <span>{{post.created.toLocaleDateString()}}</span></div>
+      <div class="post-description">{{post.description}}</div>
       <span>Version: {{post.version}}</span>
-      <span>{{post.created.toLocaleDateString()}}</span>
     </div>
-    <div>
+    <div class="post-body">
       <div *ngIf="post.type === 'TEXT'">{{post.contentText}}</div>
       <div *ngIf="post.type === 'EDITOR'">
         <app-editor [postId]="post.postId" [editorId]="post.editorId"></app-editor>
@@ -17,8 +16,8 @@
           Save
         </button>
       </div>
-      <div>
+    </div>
+      <div class="post-comments">
         <app-comments [postId]="post.postId" [comments]="post.comments"></app-comments>
       </div>
-    </div>
 </div>

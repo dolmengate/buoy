@@ -1,0 +1,15 @@
+.post {
+  background-color: lightgray;
+  margin: 1em;
+  padding: 1em;
+  border: solid 1px darkblue;
+  border-radius: 4px;
+}
+
+.post-description {
+  font-style: italic;
+}
+
+.post-title {
+  font-weight: bold;
+}

@@ -1,20 +1,45 @@
-.comment {
-
+.comments {
+  margin: .5em;
 }
 
-.reply {
+.comment-author {
+  font-weight: bold;
+  margin: .5em;
+}
+
+.comment-created {
+  margin: .5em;
+}
+
+.comment-text {
+  margin: .5em;
+  width: 50em;
+}
+
+.comment-reply {
   margin-left: 1em;
+  margin-top: .5em;
+}
+
+.comment-form {
+  margin: .5em;
+  width: 50em;
 }
 
 .active-comment {
   background-color: lightblue;
 }
 
-a {
+.form-group {
+  margin: .5em;
+  padding: .5em;
+}
+
+.link {
   text-decoration: underline;
   color: darkblue;
 }
 
-a:hover {
+.link:hover {
   cursor: pointer;
 }
