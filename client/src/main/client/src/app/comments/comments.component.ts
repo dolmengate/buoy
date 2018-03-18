@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Comment} from '../model/Comment';
-import {PostService} from "../post.service";
+import {CommentService} from "../comment.service";
 
 @Component({
   selector: 'app-comments',
@@ -8,8 +8,6 @@ import {PostService} from "../post.service";
   styleUrls: ['./comments.component.css']
 })
 export class CommentsComponent implements OnInit {
-
-  // todo: CommentService
 
   @Input()
   public postId: number;
@@ -20,8 +18,9 @@ export class CommentsComponent implements OnInit {
   public parentComment: Comment = null;
   public composedComment: Comment = new Comment();
   public commentForm: boolean = false;
+  public sortAsc: boolean = true;
 
-  constructor(private postService: PostService) { }
+  constructor(private commentService: CommentService) { }
 
   ngOnInit() { }
 
@@ -32,6 +31,7 @@ export class CommentsComponent implements OnInit {
   setParentComment(commentId: number) {
     this.parentComment = this.comments.find(c => c.commentId === commentId);
     this.composedComment.replyToId = this.parentComment.commentId;
+    this.commentForm = true;
   }
 
   clearParentComment() {
@@ -40,10 +40,10 @@ export class CommentsComponent implements OnInit {
 
   addComment() {
     if (this.parentComment)
-        this.parentComment.replies.push(this.composedComment);
-    this.comments.push(this.composedComment);
+        this.parentComment.replies.unshift(this.composedComment);
+    this.comments.unshift(this.composedComment);
 
-    this.postService.savePostComment(this.postId, this.composedComment);
+    this.commentService.saveComment(this.postId, this.composedComment);
 
     // reset
     this.composedComment = new Comment();

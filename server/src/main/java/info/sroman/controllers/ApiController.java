@@ -84,4 +84,9 @@ public class ApiController {
         }
         return new PostDTO(posts.save(post));
     }
+
+    @GetMapping(path="/posts/getcomments/{postId}")
+    public List<Comment> getAllCommentsForPost(@PathVariable String postId) {
+        return posts.findOne(Long.parseLong(postId)).getComments();
+    }
 }

@@ -1,14 +1,13 @@
 package info.sroman.entities;
 
 import info.sroman.model.CommentForm;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="post_comments")
-public class Comment {
+@Table(name="comments")
+public class Comment implements Comparable<Comment> {
 
     private Comment() { }
     public Comment(CommentForm commentForm) {
@@ -51,7 +50,6 @@ public class Comment {
     @ManyToOne(fetch=FetchType.EAGER)
     private Comment replyTo;
 
-    @CreatedDate
     private Date created;
 
     public Long getCommentId() { return commentId; }
@@ -66,6 +64,16 @@ public class Comment {
     public void setCreated(Date created) { this.created = created; }
     public Comment getReplyTo() { return replyTo; }
     public void setReplyTo(Comment replyTo) { this.replyTo = replyTo; }
+
+    @Override
+    public int compareTo(Comment c) {
+        if (this.created.before(c.created)) {
+            return -1;
+        } else if (this.created.equals(c.created)) {
+            return 0;
+        }
+        return 1;
+    }
 
     @Override
     public String toString() {

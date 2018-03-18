@@ -12,6 +12,7 @@ import { NewPostComponent } from "./new-post/new-post.component";
 import { CommentsComponent } from "./comments/comments.component";
 import { ChatComponent } from "./chat/chat.component";
 import { PostService } from "./post.service";
+import { CommentService } from "./comment.service";
 
 import { StompConfig, StompService } from "@stomp/ng2-stompjs";
 import * as SockJS from "sockjs-client";
@@ -57,7 +58,9 @@ const appRoutes: Routes = [
       provide: StompConfig,
       useValue: stompConfig
     },
-    PostService
+    PostService,
+    CommentService
+    // todo: SortingService
   ],
   bootstrap: [AppComponent]
 })

@@ -16,7 +16,7 @@ export class PostPageComponent implements OnInit {
 
   ngOnInit() {
     const postId = this.route.snapshot.paramMap.get("postId");
-    this.postService.getPost(Number(postId))
+    this.postService.getPost(+postId)
       .then((post) => this.post = post)
       .catch(err => console.log(err));
   }

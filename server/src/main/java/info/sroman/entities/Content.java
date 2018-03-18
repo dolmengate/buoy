@@ -3,7 +3,7 @@ package info.sroman.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name="post_contents")
+@Table(name="contents")
 public class Content {
 
     public Content() { }

@@ -19,17 +19,29 @@
   </form>
 </div>
 
-<div *ngIf="comments" class="comments">
+<div *ngIf="comments" class="comments-wrapper">
   <h4>Comments</h4>
   <div *ngFor="let comment of comments">
     <!-- don't display replies to other comments as top level comments-->
-    <div *ngIf="comment.replyTo === null && comment.replyToId === null" [class.active-comment]="comment === parentComment" >
-      <div>by <span class="comment-author">{{comment.author}}</span> at <span class="comment-created">{{comment.created.toLocaleDateString()}}</span></div>
-      <div class="comment-text">#{{comment.commentId}} {{comment.text}}</div>
-      <div><a (click)="setParentComment(comment.commentId)" class="link"><small>reply</small></a></div>
+    <div *ngIf="comment.replyTo === null && comment.replyToId === null">
+      <div class="comment" [class.active-comment]="comment === parentComment">
+        <div>
+          No. {{comment.commentId}} by
+          <span class="comment-author">{{comment.author}}</span>
+           at
+          <span class="comment-created">{{comment.created.toLocaleTimeString()}} on {{comment.created.toLocaleDateString()}}</span>
+        </div>
+        <div class="comment-text">{{comment.text}}</div>
+        <div><a (click)="setParentComment(comment.commentId)" class="link"><small>reply</small></a></div>
+      </div>
       <div *ngFor="let reply of comment.replies" class="comment-reply">
-        <div>by <span class="comment-author">{{reply.author}}</span> at <span class="comment-created">{{reply.created.toLocaleDateString()}}</span></div>
-        <div class="comment-text">#{{reply.commentId}} {{reply.text}}</div>
+        <div>
+          Reply to #{{comment.commentId}} by
+          <span class="comment-author">{{reply.author}}</span>
+           at
+          <span class="comment-created">{{reply.created.toLocaleTimeString()}} on {{comment.created.toLocaleDateString()}}</span>
+        </div>
+        <div class="comment-text">{{reply.text}}</div>
       </div>
     </div>
   </div>

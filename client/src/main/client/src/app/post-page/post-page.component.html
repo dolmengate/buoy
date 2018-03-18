@@ -3,7 +3,6 @@
       <div><h4>{{post.title}}</h4></div>
       <div><span>by {{post.author}}</span> at <span>{{post.created.toLocaleDateString()}}</span></div>
       <div class="post-description">{{post.description}}</div>
-      <span>Version: {{post.version}}</span>
     </div>
     <div class="post-body">
       <div *ngIf="post.type === 'TEXT'">{{post.contentText}}</div>
@@ -12,9 +11,7 @@
       </div>
       <div>
         Save and increment version:
-        <button (click)="saveAndIncrement()">
-          Save
-        </button>
+        <span>Version: {{post.version}}</span> <button (click)="saveAndIncrement()">Save</button>
       </div>
     </div>
       <div class="post-comments">

@@ -1,5 +1,16 @@
 .comments {
+  padding: .5em;
+}
+
+.comments-wrapper {
   margin: .5em;
+  padding: .5em;
+}
+
+.comment {
+  padding: .5em;
+  margin: .5em;
+  border-left: 2px solid darkblue;
 }
 
 .comment-author {
@@ -12,12 +23,15 @@
 }
 
 .comment-text {
+  padding: .5em;
   margin: .5em;
   width: 50em;
 }
 
 .comment-reply {
-  margin-left: 1em;
+  padding: .5em;
+  border-left: 2px solid gray;
+  margin-left: 2em;
   margin-top: .5em;
 }
 
@@ -27,7 +41,7 @@
 }
 
 .active-comment {
-  background-color: lightblue;
+  background-color: #e5e5e5;
 }
 
 .form-group {
