@@ -4,6 +4,7 @@ import info.sroman.model.CommentForm;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name="comments")
@@ -65,14 +66,33 @@ public class Comment implements Comparable<Comment> {
     public Comment getReplyTo() { return replyTo; }
     public void setReplyTo(Comment replyTo) { this.replyTo = replyTo; }
 
+    // sorts newest to oldest
     @Override
     public int compareTo(Comment c) {
         if (this.created.before(c.created)) {
-            return -1;
+            return 1;
         } else if (this.created.equals(c.created)) {
             return 0;
         }
-        return 1;
+        return -1;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        return Objects.equals(commentId, comment.commentId) &&
+                Objects.equals(text, comment.text) &&
+                Objects.equals(author, comment.author) &&
+                Objects.equals(post, comment.post) &&
+                Objects.equals(replyTo, comment.replyTo) &&
+                Objects.equals(created, comment.created);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(commentId, text, author, post, replyTo, created);
     }
 
     @Override
@@ -82,9 +102,8 @@ public class Comment implements Comparable<Comment> {
                 ", text='" + text + '\'' +
                 ", author='" + author + '\'' +
                 ", post=" + post +
-                ", replyTo=" + replyTo +
+                ", replyTo=" + (replyTo != null ? replyTo.getCommentId() : null) +
                 ", created=" + created +
                 '}';
     }
 }
-

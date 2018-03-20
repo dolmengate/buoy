@@ -11,8 +11,8 @@ import { PostPageComponent } from "./post-page/post-page.component";
 import { NewPostComponent } from "./new-post/new-post.component";
 import { CommentsComponent } from "./comments/comments.component";
 import { ChatComponent } from "./chat/chat.component";
-import { PostService } from "./post.service";
-import { CommentService } from "./comment.service";
+import { PostService } from "./services/post.service";
+import { CommentService } from "./services/comment.service";
 
 import { StompConfig, StompService } from "@stomp/ng2-stompjs";
 import * as SockJS from "sockjs-client";

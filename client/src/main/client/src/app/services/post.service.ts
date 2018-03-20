@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Post} from "./model/Post";
+import {Post} from "../model/Post";
 import axios from "axios";
 
 @Injectable()
@@ -30,7 +30,7 @@ export class PostService {
     return new Promise((resolve, reject) => {
       const singlePostUrl = `${this.postsUrl}/${postId}`;
       axios.get(singlePostUrl)
-        .then(res => {resolve(Post.getInstance(res.data)); })
+        .then(res => { resolve(Post.getInstance(res.data)); })
         .catch(err => reject(err));
     });
   }

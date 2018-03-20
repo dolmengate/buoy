@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 @RestController
@@ -73,7 +74,7 @@ public class ApiController {
 
     @PostMapping(path="/posts/addcomment/{postId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public PostDTO addComment(@PathVariable String postId, @RequestBody CommentForm cForm) {
+    public void addComment(@PathVariable String postId, @RequestBody CommentForm cForm) {
         Post post = posts.findOne(Long.parseLong(postId));
 
         if (cForm.getReplyToId() == null) { // post is not a reply: it is a top-level comment
@@ -82,11 +83,11 @@ public class ApiController {
             Comment parentComment = comments.findOne(cForm.getReplyToId());
             post.getComments().add(new Comment(cForm, parentComment));
         }
-        return new PostDTO(posts.save(post));
+        posts.save(post);
     }
 
     @GetMapping(path="/posts/getcomments/{postId}")
-    public List<Comment> getAllCommentsForPost(@PathVariable String postId) {
-        return posts.findOne(Long.parseLong(postId)).getComments();
+    public TreeSet<Comment> getAllCommentsForPost(@PathVariable String postId) {
+        return new TreeSet<>(posts.findOne(Long.parseLong(postId)).getComments());
     }
 }

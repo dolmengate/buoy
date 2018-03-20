@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Comment } from './model/Comment';
-import { SortingSpec } from "./model/SortingSpec";
+import { Comment } from '../model/Comment';
 import axios from 'axios';
 
 @Injectable()
@@ -24,9 +23,9 @@ export class CommentService {
     })
   }
 
-  getSortedPostComments(postId: number, sort: SortingSpec): Promise<Comment[]> {
+  getPostComments(postId: number): Promise<Comment[]> {
     return new Promise((resolve, reject) => {
-      axios.post(`${this.postsUrl}/getcomments/${postId}`, sort)
+      axios.get(`${this.postsUrl}/getcomments/${postId}`)
         .then((res) => resolve(res.data.map(c => {return Comment.getInstance(c, res.data);})))
         .catch(err => reject(err));
     })

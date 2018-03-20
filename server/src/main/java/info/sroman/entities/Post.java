@@ -3,14 +3,14 @@ package info.sroman.entities;
 import info.sroman.model.PostForm;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Entity
 @Table(name="posts")
-public class Post {
+public class Post implements Comparable<Post> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,7 +29,7 @@ public class Post {
     // no mappedBy: Comment.post has no @JoinColumn annotation: this relationship is one-way: one to many
     // fetch=FetchType.EAGER: selections will automatically get and construct all contained entities
     @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-    private List<Comment> comments;
+    private Set<Comment> comments;
 
     private Date lastModified;
     private Date created;
@@ -49,7 +49,7 @@ public class Post {
         this.content = content;
         this.created = new Date();
         this.lastModified = this.created;
-        this.comments = new ArrayList<>(Arrays.asList(comments));
+        this.comments = new TreeSet<>(Arrays.asList(comments));
     }
 
     public Post(String title, String author, String description, Content content) {
@@ -82,10 +82,21 @@ public class Post {
     public void setDescription(String description) { this.description = description; this.setLastModified(); }
     public Content getContent() { return content; }
     public void setContent(Content content) { this.content = content; }
-    public List<Comment> getComments() { return comments; }
-    public void setComments(List<Comment> comments) { this.comments = comments; }
+    public Set<Comment> getComments() { return comments; }
+    public void setComments(Set<Comment> comments) { this.comments = comments; }
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; this.setLastModified(); }
+
+    // sorts late
+    @Override
+    public int compareTo(Post p) {
+        if (this.created.before(p.created)) {
+            return 1;
+        } else if (this.created.equals(p.created)) {
+            return 0;
+        }
+        return -1;
+    }
 
     @Override
     public String toString() {

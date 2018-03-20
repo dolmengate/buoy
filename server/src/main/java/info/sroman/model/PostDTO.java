@@ -5,6 +5,7 @@ import info.sroman.entities.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.TreeSet;
 
 public class PostDTO {
 
@@ -23,7 +24,7 @@ public class PostDTO {
         this.type = p.getContent().getType();
         this.version = p.getContent().getVersion();
 
-        this.comments = p.getComments();
+        this.comments = new TreeSet<>(p.getComments());
 
         this.editorId = p.getContent().getEditor().getAttachmentId();
         this.editorText = p.getContent().getEditor().getText();
@@ -51,7 +52,7 @@ public class PostDTO {
 
     // Comments
     private Integer numComments;
-    private List<Comment> comments;
+    private TreeSet<Comment> comments;
 
     // File attributes
     // ...
@@ -84,7 +85,7 @@ public class PostDTO {
     public Long getEditorId() { return editorId; }
     public String getEditorText() { return editorText; }
     public boolean isCachedVersion() { return cachedVersion; }
-    public List<Comment> getComments() { return comments; }
+    public TreeSet<Comment> getComments() { return comments; }
 
     @JsonView(MetadataOnlyView.class)
     public Integer getNumComments() { return numComments; }
@@ -101,7 +102,7 @@ public class PostDTO {
     public void setEditorId(Long editorId) { this.editorId = editorId; }
     public void setEditorText(String editorText) { this.editorText = editorText; }
     public void setCachedVersion(boolean cachedVersion) { this.cachedVersion = cachedVersion; }
-    public void setComments(List<Comment> comments) { this.comments = comments; this.setNumComments(this.comments.size()); }
+    public void setComments(TreeSet<Comment> comments) { this.comments = comments; this.setNumComments(this.comments.size()); }
     private void setNumComments(Integer numComments) { this.numComments = numComments; }
 
     @Override

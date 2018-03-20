@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Comment} from '../model/Comment';
-import {CommentService} from "../comment.service";
+import {CommentService} from "../services/comment.service";
 
 @Component({
   selector: 'app-comments',
@@ -18,7 +18,6 @@ export class CommentsComponent implements OnInit {
   public parentComment: Comment = null;
   public composedComment: Comment = new Comment();
   public commentForm: boolean = false;
-  public sortAsc: boolean = true;
 
   constructor(private commentService: CommentService) { }
 
@@ -39,14 +38,11 @@ export class CommentsComponent implements OnInit {
   }
 
   addComment() {
-    if (this.parentComment)
-        this.parentComment.replies.unshift(this.composedComment);
-    this.comments.unshift(this.composedComment);
-
-    this.commentService.saveComment(this.postId, this.composedComment);
+    this.commentService.saveComment(this.postId, this.composedComment)
+      .then(() => { location.reload(true); } );
 
     // reset
     this.composedComment = new Comment();
-    this.parentComment = null;
+    this.clearParentComment();
   }
 }
