@@ -6,14 +6,14 @@ public class CommentForm {
 
     private String text;
     private String author;
-    private Long replyToId;
+    private String replyToId;
 
     public String getText() { return text; }
     public void setText(String text) { this.text = text; }
     public String getAuthor() { return author; }
     public void setAuthor(String author) { this.author = author; }
-    public Long getReplyToId() { return replyToId; }
-    public void setReplyToId(Long replyToId) { this.replyToId = replyToId; }
+    public String getReplyToId() { return replyToId; }
+    public void setReplyToId(String replyToId) { this.replyToId = replyToId; }
 
     @Override
     public String toString() {

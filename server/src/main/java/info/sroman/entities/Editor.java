@@ -3,11 +3,8 @@ package info.sroman.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name="editors")
+@Table(name="editor")
 public class Editor extends Attachment {
-
-    @OneToOne(fetch=FetchType.EAGER, mappedBy="editor")
-    private Content content;
 
     private String text;
 //    private String language;
@@ -17,15 +14,11 @@ public class Editor extends Attachment {
 
     public String getText() { return text; }
     public void setText(String text) { this.text = text; }
-    public Content getContent() { return content; }
-    public void setContent(Content content) { this.content = content; }
 
     @Override
     public String toString() {
         return "Editor{" +
-                "content=" + content +
                 ", text='" + text + '\'' +
-                ", attachmentId=" + attachmentId +
                 '}';
     }
 }

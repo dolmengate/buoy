@@ -6,8 +6,8 @@ public class SocketMessage {
 
     private String text;
     private boolean freshConnect;
-    private Long postId;
-    private Long editorId;
+    private String postId;
+    private String editorId;
 
     public SocketMessage() {}
     public SocketMessage(String text) {
@@ -18,7 +18,7 @@ public class SocketMessage {
     public SocketMessage(Editor editor) {
         this.text = editor.getText();
         this.editorId = editor.getAttachmentId();
-        this.postId = editor.getContent().getPost().getPostId();
+        this.postId = editor.getPost().getPostId();
         this.freshConnect = false;
     }
 
@@ -26,10 +26,10 @@ public class SocketMessage {
     public void setText(String text) { this.text = text; }
     public boolean isFreshConnect() { return this.freshConnect; }
     public void setFreshConnect(boolean freshConnect) { this.freshConnect = freshConnect; }
-    public Long getEditorId() { return editorId; }
-    public void setEditorId(Long editorId) { this.editorId = editorId; }
-    public Long getPostId() { return postId; }
-    public void setPostId(Long postId) { this.postId = postId; }
+    public String getEditorId() { return editorId; }
+    public void setEditorId(String editorId) { this.editorId = editorId; }
+    public String getPostId() { return postId; }
+    public void setPostId(String postId) { this.postId = postId; }
 
     @Override
     public String toString() {

@@ -1,13 +1,11 @@
 package info.sroman.repositories;
 
 import info.sroman.entities.Editor;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
 
-public interface EditorRepository extends CrudRepository<Editor, Long>{
+public interface EditorRepository extends CrudRepository<Editor, String>{
 
     @Query("SELECT e FROM Editor e " +
             "JOIN e.content c " +

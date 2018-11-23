@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface CommentRepository extends CrudRepository<Comment, Long> {
+public interface CommentRepository extends CrudRepository<Comment, String> {
 
     @Query("SELECT c FROM Comment c " +
             "WHERE c.replyTo.commentId = :cId")

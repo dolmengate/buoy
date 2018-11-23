@@ -22,7 +22,7 @@ public class SocketController {
     @Autowired
     EditorRepository editorsRepo;
 
-    private Map<Long, Editor> editorsCache = new HashMap<>();
+    private Map<String, Editor> editorsCache = new HashMap<>();
     // todo: periodically check editors to see if anyone has used it in a while, if not remove from editorsCache -- lastTouched property?
     // todo: EditorCache class
     // todo: ChatCache class
@@ -45,7 +45,7 @@ public class SocketController {
     // "response" endpoint to push outgoing WebSocket messages to. Clients subscribe to this endpoint to see messages
     @SendTo("/topic/editor")
     public SocketMessage sendMessage(SocketMessage incomingMessage) {
-        Long id = incomingMessage.getEditorId();
+        String id = incomingMessage.getEditorId();
 
         // check 'editorsCache' map before pulling editor text from DB
         Editor requestedEditor = editorsCache.get(id);

@@ -22,13 +22,13 @@ import java.util.stream.Collectors;
 public class ApiController {
 
     @Autowired
-    PostRepository posts;
+    private PostRepository posts;
 
     @Autowired
-    EditorRepository editors;
+    private EditorRepository editors;
 
     @Autowired
-    CommentRepository comments;
+    private CommentRepository comments;
 
     private static final Logger log = LoggerFactory.getLogger(ApiController.class);
 
@@ -42,40 +42,29 @@ public class ApiController {
 
     @GetMapping(path="/posts/{postId}")
     public PostDTO getPostById(@PathVariable String postId) {
-        return new PostDTO(posts.findOne(Long.parseLong(postId)));
+        return new PostDTO(posts.findOne(postId));
     }
 
     @PostMapping(path="/posts/new")
     @ResponseStatus(HttpStatus.CREATED)
     public PostDTO newPost(@RequestBody @Validated PostForm form) {
-
         Post p = new Post(form.getTitle(), form.getAuthor(), form.getDescription());
-        Content c = new Content(form.getType(), form.getContentText(), 1.0F);
-        if (form.getType() == Type.EDITOR) {
-            Editor e = new Editor();
-            c.setEditor(e);
-        }
-        p.setContent(c);
+
         return new PostDTO(posts.save(p));
     }
 
     @PostMapping(path="/posts/save/{postId}")
     public PostDTO updateContentAndIncrementVersion(@PathVariable String postId, @RequestBody PostDTO pDTO) {
-        Post post = posts.findOne(Long.parseLong(postId));
 
-        // increment Content version
-        post.getContent().setVersion(post.getContent().getVersion() + 0.1F);
+        pDTO.setVersion(pDTO.getVersion() + 0.1F);
 
-        // update Editor text
-        post.getContent().getEditor().setText(pDTO.getEditorText());
-
-        return new PostDTO(posts.save(post));
+        return new PostDTO(posts.save(new Post(pDTO)));
     }
 
     @PostMapping(path="/posts/addcomment/{postId}")
     @ResponseStatus(HttpStatus.CREATED)
     public void addComment(@PathVariable String postId, @RequestBody CommentForm cForm) {
-        Post post = posts.findOne(Long.parseLong(postId));
+        Post post = posts.findOne(postId);
 
         if (cForm.getReplyToId() == null) { // post is not a reply: it is a top-level comment
             post.getComments().add(new Comment(cForm));
@@ -88,6 +77,6 @@ public class ApiController {
 
     @GetMapping(path="/posts/getcomments/{postId}")
     public TreeSet<Comment> getAllCommentsForPost(@PathVariable String postId) {
-        return new TreeSet<>(posts.findOne(Long.parseLong(postId)).getComments());
+        return new TreeSet<>(posts.findOne(postId).getComments());
     }
 }

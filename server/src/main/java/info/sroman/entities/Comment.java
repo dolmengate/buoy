@@ -1,6 +1,7 @@
 package info.sroman.entities;
 
 import info.sroman.model.CommentForm;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -37,9 +38,10 @@ public class Comment implements Comparable<Comment> {
         this.replyTo = replyTo;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long commentId;
+    @Id @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    @Column(name = "content_id")
+    private String commentId;
 
     private String text;
     private String author;
@@ -51,10 +53,14 @@ public class Comment implements Comparable<Comment> {
     @ManyToOne(fetch=FetchType.EAGER)
     private Comment replyTo;
 
+    @Column(name = "reply_to_attachment_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Attachment replyToAttachment;
+
     private Date created;
 
-    public Long getCommentId() { return commentId; }
-    public void setCommentId(Long commentId) { this.commentId = commentId; }
+    public String getCommentId() { return commentId; }
+    public void setCommentId(String commentId) { this.commentId = commentId; }
     public String getText() { return text; }
     public void setText(String text) { this.text = text; }
     public String getAuthor() { return author; }

@@ -27,7 +27,7 @@ public class Application {
                             "my titel",
                             "chadimus",
                             "the description",
-                            new Content(new Editor("codezcodezcodezcodezcodez"), Type.EDITOR, null, 1.0F),
+                            new PostContent(new Editor("codezcodezcodezcodezcodez"), Type.EDITOR, null, 1.0F),
                             c1
                     )
             );
