@@ -1,24 +1,20 @@
 package info.sroman.entities;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "prog_lang")
 public class ProgrammingLanguage {
 
-    @Id @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
-    @Column(name = "content_id")
-    private String progLangId;
+    @Id
+    private Integer progLangId;
     private String name;
 
-    public String getProgLangId() {
+    public Integer getProgLangId() {
         return progLangId;
     }
 
-    public void setProgLangId(String progLangId) {
+    public void setProgLangId(Integer progLangId) {
         this.progLangId = progLangId;
     }
 

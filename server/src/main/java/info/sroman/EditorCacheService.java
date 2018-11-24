@@ -2,20 +2,21 @@ package info.sroman;
 
 import info.sroman.entities.Editor;
 import info.sroman.model.SocketMessage;
-import info.sroman.repositories.EditorRepository;
+import info.sroman.repositories.AttachmentRepository;
 import info.sroman.repositories.PostRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 @Service
 public class EditorCacheService {
 
-    public EditorCacheService(PostRepository postsRepo, EditorRepository editorsRepo) { }
+    public EditorCacheService(PostRepository postsRepo, AttachmentRepository attachmentsRepo) { }
 
-    private Map<Long, Editor> editors = new HashMap<>();
+    private Map<UUID, Editor> editors = new HashMap<>();
 
     private Logger log = Logger.getLogger("EditorCacheService");
 
@@ -33,7 +34,7 @@ public class EditorCacheService {
      */
     private Editor checkForActiveEditor(SocketMessage request) {
         try {
-            return editors.get(request.getEditorId());
+            return editors.get(UUID.fromString(request.getEditorId()));
         } catch (NullPointerException | NumberFormatException ex) {
             log.warning("SocketMessage: " + request);
             ex.printStackTrace();

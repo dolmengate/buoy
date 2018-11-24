@@ -14,7 +14,7 @@ public class PostDTO {
 
     public PostDTO() { }
     public PostDTO(Post p) {
-        this.postId = p.getPostId();
+        this.postId = p.getPostId().toString();
         this.author = p.getAuthor();
         this.title = p.getTitle();
         this.description = p.getDescription();

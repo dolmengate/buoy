@@ -17,8 +17,8 @@ public class SocketMessage {
 
     public SocketMessage(Editor editor) {
         this.text = editor.getText();
-        this.editorId = editor.getAttachmentId();
-        this.postId = editor.getPost().getPostId();
+        this.editorId = editor.getAttachmentId().toString();
+        this.postId = editor.getPost().getPostId().toString();
         this.freshConnect = false;
     }
 

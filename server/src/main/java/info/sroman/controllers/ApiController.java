@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.TreeSet;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -25,7 +26,7 @@ public class ApiController {
     private PostRepository posts;
 
     @Autowired
-    private EditorRepository editors;
+    private AttachmentRepository attachmentsRepo;
 
     @Autowired
     private CommentRepository comments;
@@ -42,34 +43,30 @@ public class ApiController {
 
     @GetMapping(path="/posts/{postId}")
     public PostDTO getPostById(@PathVariable String postId) {
-        return new PostDTO(posts.findOne(postId));
+        return new PostDTO(posts.findOne(UUID.fromString(postId)));
     }
 
     @PostMapping(path="/posts/new")
     @ResponseStatus(HttpStatus.CREATED)
     public PostDTO newPost(@RequestBody @Validated PostForm form) {
         Post p = new Post(form.getTitle(), form.getAuthor(), form.getDescription());
-
         return new PostDTO(posts.save(p));
     }
 
     @PostMapping(path="/posts/save/{postId}")
     public PostDTO updateContentAndIncrementVersion(@PathVariable String postId, @RequestBody PostDTO pDTO) {
-
         pDTO.setVersion(pDTO.getVersion() + 0.1F);
-
         return new PostDTO(posts.save(new Post(pDTO)));
     }
 
     @PostMapping(path="/posts/addcomment/{postId}")
     @ResponseStatus(HttpStatus.CREATED)
     public void addComment(@PathVariable String postId, @RequestBody CommentForm cForm) {
-        Post post = posts.findOne(postId);
-
+        Post post = posts.findOne(UUID.fromString(postId));
         if (cForm.getReplyToId() == null) { // post is not a reply: it is a top-level comment
             post.getComments().add(new Comment(cForm));
         } else {
-            Comment parentComment = comments.findOne(cForm.getReplyToId());
+            Comment parentComment = comments.findOne(UUID.fromString(cForm.getReplyToId()));
             post.getComments().add(new Comment(cForm, parentComment));
         }
         posts.save(post);
@@ -77,6 +74,6 @@ public class ApiController {
 
     @GetMapping(path="/posts/getcomments/{postId}")
     public TreeSet<Comment> getAllCommentsForPost(@PathVariable String postId) {
-        return new TreeSet<>(posts.findOne(postId).getComments());
+        return new TreeSet<>(posts.findOne(UUID.fromString(postId)).getComments());
     }
 }

@@ -5,7 +5,7 @@ commit;
 
 DROP TABLE IF EXISTS `attachment_type`;
 CREATE TABLE `attachment_type` (
-  `attachment_type_id` tinyint(1) NOT NULL,
+  `attachment_type_id` INTEGER(1) NOT NULL,
   `name` varchar(64) NOT NULL,
   PRIMARY KEY (`attachment_type_id`)
 );
@@ -16,7 +16,7 @@ INSERT INTO buoy_test.attachment_type(attachment_type_id, name) VALUES(3, 'IMAGE
 
 DROP TABLE IF EXISTS `prog_lang`;
 CREATE TABLE `prog_lang` (
-  `prog_lang_id` tinyint(1) NOT NULL,
+  `prog_lang_id` INTEGER(1) NOT NULL,
   `name` varchar(64) NOT NULL,
   PRIMARY KEY (`prog_lang_id`)
 );
@@ -29,11 +29,11 @@ INSERT INTO buoy_test.prog_lang(prog_lang_id, name) VALUES(3, 'JavaScript');
 DROP TABLE IF EXISTS `attachment`;
 CREATE TABLE `attachment` (
   `attachment_id` char(36) NOT NULL,
-  `attachment_type_id` tinyint(1) NOT NULL,
+  `attachment_type_id` INTEGER(1) NOT NULL,
   `post_id` char(36) NOT NULL,
   `version` float NOT NULL DEFAULT 1.0,
   `text` varchar(5000) DEFAULT NULL,
-  `prog_lang_id` tinyint(1) DEFAULT NULL,
+  `prog_lang_id` INTEGER(1) DEFAULT NULL,
   `image_uri` varchar(64) DEFAULT NULL,
   `file_uri` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`attachment_id`),

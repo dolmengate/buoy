@@ -19,28 +19,7 @@ public class Application {
     }
 
     @Bean
-    public CommandLineRunner run(PostRepository posts, ContentRepository contents, EditorRepository editors, CommentRepository comments) {
-        return (args) -> {
-            Comment c1 = new Comment("virginia", "comment text");
-            Post p = posts.save(
-                    new Post(
-                            "my titel",
-                            "chadimus",
-                            "the description",
-                            new PostContent(new Editor("codezcodezcodezcodezcodez"), Type.EDITOR, null, 1.0F),
-                            c1
-                    )
-            );
-
-            c1 = comments.findOne(c1.getCommentId());
-
-            Comment c2 = new Comment("me", "hi dot com", c1);
-            c2.setCreated(new Date(1420883654273L));
-            Comment c3 = new Comment("me", "another reply", c1);
-            c3.setCreated(new Date(1320883654273L));
-            p.getComments().add(c2);
-            p.getComments().add(c3);
-            posts.save(p);
-        };
+    public CommandLineRunner run(PostRepository posts, AttachmentRepository editors, CommentRepository comments) {
+        return (args) -> { };
     }
 }

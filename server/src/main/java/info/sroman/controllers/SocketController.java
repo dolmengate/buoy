@@ -2,7 +2,7 @@ package info.sroman.controllers;
 
 import info.sroman.model.SocketMessage;
 import info.sroman.entities.Editor;
-import info.sroman.repositories.EditorRepository;
+import info.sroman.repositories.AttachmentRepository;
 import info.sroman.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 @Controller
@@ -20,9 +21,9 @@ public class SocketController {
     PostRepository postsRepo;
 
     @Autowired
-    EditorRepository editorsRepo;
+    AttachmentRepository attachmentsRepo;
 
-    private Map<String, Editor> editorsCache = new HashMap<>();
+    private Map<UUID, Editor> editorsCache = new HashMap<>();
     // todo: periodically check editors to see if anyone has used it in a while, if not remove from editorsCache -- lastTouched property?
     // todo: EditorCache class
     // todo: ChatCache class
@@ -45,13 +46,13 @@ public class SocketController {
     // "response" endpoint to push outgoing WebSocket messages to. Clients subscribe to this endpoint to see messages
     @SendTo("/topic/editor")
     public SocketMessage sendMessage(SocketMessage incomingMessage) {
-        String id = incomingMessage.getEditorId();
+        UUID id = UUID.fromString(incomingMessage.getEditorId());
 
         // check 'editorsCache' map before pulling editor text from DB
         Editor requestedEditor = editorsCache.get(id);
 
         if (requestedEditor == null) {     // editor could not be found in editorsCache
-            requestedEditor = editorsRepo.findOne(id);
+            requestedEditor = (Editor)attachmentsRepo.findOne(id);
             editorsCache.put(requestedEditor.getAttachmentId(), requestedEditor);
         }
 

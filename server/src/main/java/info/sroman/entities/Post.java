@@ -3,19 +3,22 @@ package info.sroman.entities;
 import info.sroman.model.PostDTO;
 import info.sroman.model.PostForm;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
-@Table(name="posts")
+@Table(name="post")
 public class Post implements Comparable<Post> {
 
     @Id @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
-    @Column(name = "post_id")
-    private String postId;
+    @Type(type="uuid-char")
+    @Column(name = "post_id", columnDefinition = "char")
+    private UUID postId;
 
     private String author;
     private String title;
@@ -27,9 +30,11 @@ public class Post implements Comparable<Post> {
     // no mappedBy: Comment.post has no @JoinColumn annotation: this relationship is one-way: one to many
     // fetch=FetchType.EAGER: selections will automatically get and construct all contained entities
     @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+    @JoinColumn(name = "post_id")
     private Set<Comment> comments;
 
     @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+    @JoinColumn(name = "post_id")
     private Set<Attachment> attachments;
 
     public Post() { setCreated(); }
@@ -41,7 +46,7 @@ public class Post implements Comparable<Post> {
     }
 
     public Post(PostDTO postDto) {
-        this.postId = postDto.getPostId();
+        this.postId = UUID.fromString(postDto.getPostId());
         this.author = postDto.getAuthor();
         this.title = postDto.getTitle();
         this.description = postDto.getDescription();
@@ -60,8 +65,8 @@ public class Post implements Comparable<Post> {
         this.lastModified = this.created;
     }
 
-    public String getPostId() { return postId; }
-    public void setPostId(String postId) { this.postId = postId; this.setLastModified(); }
+    public UUID getPostId() { return postId; }
+    public void setPostId(UUID postId) { this.postId = postId; this.setLastModified(); }
     public String getAuthor() { return author; }
     public void setAuthor(String author) { this.author = author; this.setLastModified(); }
     public Date getLastModified() { return lastModified; }

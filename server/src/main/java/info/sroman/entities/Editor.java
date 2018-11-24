@@ -2,8 +2,7 @@ package info.sroman.entities;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name="editor")
+//@Entity
 public class Editor extends Attachment {
 
     private String text;

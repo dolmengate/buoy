@@ -2,13 +2,15 @@ package info.sroman.entities;
 
 import info.sroman.model.CommentForm;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
-@Table(name="comments")
+@Table(name="comment")
 public class Comment implements Comparable<Comment> {
 
     private Comment() { }
@@ -40,27 +42,29 @@ public class Comment implements Comparable<Comment> {
 
     @Id @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
-    @Column(name = "content_id")
-    private String commentId;
+    @Type(type="uuid-char")
+    @Column(name = "comment_id", columnDefinition = "char")
+    private UUID commentId;
 
     private String text;
     private String author;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    // no @JoinColumn: this relationship is one-way: from the one to the many (post to comment)
+    @JoinColumn(name = "post_id")
     private Post post;
 
     @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name = "reply_to_comment_id")
     private Comment replyTo;
 
-    @Column(name = "reply_to_attachment_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reply_to_attachment_id")
     private Attachment replyToAttachment;
 
     private Date created;
 
-    public String getCommentId() { return commentId; }
-    public void setCommentId(String commentId) { this.commentId = commentId; }
+    public UUID getCommentId() { return commentId; }
+    public void setCommentId(UUID commentId) { this.commentId = commentId; }
     public String getText() { return text; }
     public void setText(String text) { this.text = text; }
     public String getAuthor() { return author; }
@@ -71,6 +75,8 @@ public class Comment implements Comparable<Comment> {
     public void setCreated(Date created) { this.created = created; }
     public Comment getReplyTo() { return replyTo; }
     public void setReplyTo(Comment replyTo) { this.replyTo = replyTo; }
+    public Attachment getReplyToAttachment() { return replyToAttachment; }
+    public void setReplyToAttachment(Attachment replyToAttachment) { this.replyToAttachment = replyToAttachment; }
 
     // sorts newest to oldest
     @Override

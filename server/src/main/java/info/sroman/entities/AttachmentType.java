@@ -1,31 +1,26 @@
 package info.sroman.entities;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "attachment_type")
 public class AttachmentType {
 
-    @Id @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
-    @Column(name = "content_id")
-    private String contentId;
+    @Id
+    @Column(name = "attachment_type_id")
+    private Integer attachmentTypeId;
+
     private String name;
 
-    public String getContentId() {
-        return contentId;
+    public Integer getContentId() {
+        return attachmentTypeId;
     }
-
-    public void setContentId(String contentId) {
-        this.contentId = contentId;
+    public void setContentId(Integer attachmentTypeId) {
+        this.attachmentTypeId = attachmentTypeId;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }

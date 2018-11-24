@@ -1,19 +1,13 @@
 package info.sroman.repositories;
 
 import info.sroman.entities.Post;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface PostRepository extends CrudRepository<Post, String> {
+public interface PostRepository extends CrudRepository<Post, UUID> {
 
-    @Query("SELECT p FROM Post p " +
-            "INNER JOIN p.content c " +
-            "INNER JOIN c.editor e " +
-            "WHERE e.attachmentId = :eId")
-    Post findOneByEditorId(@Param("eId") Long editorId);
     List<Post> findByPostId(String id);
     List<Post> findByTitle(String title);
     List<Post> findByAuthor(String author);
