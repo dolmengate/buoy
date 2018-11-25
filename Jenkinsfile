@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('pre') {
             steps {
-                sh 'mvn clean install:install'
+                sh 'mvn clean dependency:resolve'
             }
         }
         stage('build') {
