@@ -3,7 +3,8 @@ pipeline {
     stages {
         stage('pre') {
             steps {
-                sh 'mvn clean dependency:resolve'
+                sh 'mvn clean dependency:resolve -U'
+                sh 'mvn clean plugin:descriptor'
             }
         }
         stage('build') {
