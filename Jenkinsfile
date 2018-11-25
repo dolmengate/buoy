@@ -1,6 +1,11 @@
 pipeline {
     agent any
     stages {
+        stage('pre') {
+            steps {
+                sh 'mvn clean install:install'
+            }
+        }
         stage('build') {
             steps {
                 sh 'mvn clean compiler:compile'
