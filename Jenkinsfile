@@ -7,7 +7,7 @@ pipeline {
                 sh 'mvn clean compiler:testCompile'
             }
         }
-        stage('unit test')
+        stage('unit test') {
             steps {
                 sh 'mvn clean surefire:test'
             }
